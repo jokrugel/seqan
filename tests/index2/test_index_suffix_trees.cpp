@@ -1,5 +1,5 @@
 // ==========================================================================
-//                 SeqAn - The Library for Sequence Analysis
+//                                   index2
 // ==========================================================================
 // Copyright (c) 2006-2015, Knut Reinert, FU Berlin
 // All rights reserved.
@@ -29,40 +29,43 @@
 // DAMAGE.
 //
 // ==========================================================================
+// Author: Alexander Aumann <aumann@in.tum.de>
+// ==========================================================================
+// Tests for the SeqAn module index2.
+// ==========================================================================
 
-#include <iostream>
-#include <fstream>
-#include <functional>
-#include <typeinfo>
+#include "test_index_suffix_trees.h"
+#include "test_index_digest.h"
+#include "test_index_sttd64.h"
 
-#define SEQAN_DEBUG
-//#define SEQAN_TEST
-#define SEQAN_ENABLE_CHECKPOINTS 0
-
-#include <seqan/basic.h>
-#include <seqan/align.h>
-#include <seqan/find.h>
-#include <seqan/stream.h>
-#include <seqan/index.h>
-#include <seqan/index2.h>
-#include <seqan/sequence.h>
-#include <seqan/pipe.h>
-
-#include "test_index_helpers.h"
-#include "test_qgram_index.h"
-
-using namespace std;
 using namespace seqan;
 
-SEQAN_BEGIN_TESTSUITE(test_index)
+SEQAN_BEGIN_TESTSUITE(test_index_suffix_trees)
 {
-	SEQAN_CALL_TEST(testStepSize);
-	SEQAN_CALL_TEST(testGappedShapes);
-	SEQAN_CALL_TEST(testUngappedShapes);
-	SEQAN_CALL_TEST(testUngappedQGramIndex);
-	SEQAN_CALL_TEST(testUngappedQGramIndexMulti);
-	SEQAN_CALL_TEST(testQGramFind);
-	SEQAN_CALL_TEST(testQGramFindExt);
-	SEQAN_CALL_TEST(testQGram2LFindExt);
+    // Call tests.
+    SEQAN_CALL_TEST(test_index_digest_bits);
+    SEQAN_CALL_TEST(test_index_digest_bits_dna);
+    SEQAN_CALL_TEST(test_index_digest_lexical);
+    SEQAN_CALL_TEST(test_index_digest_construct_find);
+    SEQAN_CALL_TEST(test_index_digest_construct_find_2);
+    //SEQAN_CALL_TEST(test_index_digest_construct_find_file);
+    //SEQAN_CALL_TEST(test_index_digest_open_save);
+
+    SEQAN_CALL_TEST(test_index_sttd64_basicConstruction1);
+    SEQAN_CALL_TEST(test_index_sttd64_basicConstruction2);
+    SEQAN_CALL_TEST(test_index_sttd64_basicConstruction3);
+    SEQAN_CALL_TEST(test_index_sttd64_basicConstruction4);
+    SEQAN_CALL_TEST(test_index_sttd64_printTree);
+    //SEQAN_CALL_TEST(test_index_sttd64_readFile);
+    SEQAN_CALL_TEST(test_index_sttd64_iterateTopDown1);
+    SEQAN_CALL_TEST(test_index_sttd64_iterateTopDown2);
+    SEQAN_CALL_TEST(test_index_sttd64_iterateTopDown3);
+    SEQAN_CALL_TEST(test_index_sttd64_iterateTopDown4);
+    SEQAN_CALL_TEST(test_index_sttd64_iterateTopDown5);
+    SEQAN_CALL_TEST(test_index_sttd64_iterateTopDownPrefLen2);
+    SEQAN_CALL_TEST(test_index_sttd64_iterateTopDownPrefLen3);
+    //SEQAN_CALL_TEST(test_index_sttd64_iterateTopDownPrefLen2Files);
+    //SEQAN_CALL_TEST(test_index_sttd64_iterateTopDownPrefLen0Files);
+    SEQAN_CALL_TEST(test_index_sttd64_iterateTopDownLongInput);
 }
 SEQAN_END_TESTSUITE

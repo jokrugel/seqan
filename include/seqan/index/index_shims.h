@@ -205,6 +205,19 @@ namespace SEQAN_NAMESPACE_MAIN
         _createSuffixArrayWrapper(sa, s, alg, typename SACreatorRandomAccess_<TSA, TText, TAlgSpec>::Type());
     }
 
+    // TODO(krugel) Otherwise LarssonSadakane cannot be called in test_index_suffix_trees
+    template < 
+        typename TSA,
+        typename TText>
+    inline void createSuffixArray(
+        TSA &sa,
+        TText const &s,
+        LarssonSadakane const &alg)
+    {
+    SEQAN_CHECKPOINT
+        _createSuffixArrayWrapper(sa, s, alg, False());
+    }
+
 //____________________________________________________________________________
 
 /*!

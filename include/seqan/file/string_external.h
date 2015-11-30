@@ -531,7 +531,7 @@ namespace SEQAN_NAMESPACE_MAIN
         inline TIterator& operator-= (TDifference delta) {
             TDifference dPNo  = delta / PAGESIZE;
             TDifference dPOfs = delta % PAGESIZE;
-            if (pageOfs < dPOfs) {
+            if (static_cast<TDifference>(pageOfs) < dPOfs) {
                 ++dPNo;
                 pageOfs = PAGESIZE + pageOfs - dPOfs;
             } else
@@ -801,7 +801,7 @@ namespace SEQAN_NAMESPACE_MAIN
         inline TIterator& operator-= (TDifference delta) {
             TDifference dPNo  = delta / PAGESIZE;
             TDifference dPOfs = delta % PAGESIZE;
-            if (pageOfs < dPOfs) {
+            if (static_cast<TDifference>(pageOfs) < dPOfs) {
                 ++dPNo;
                 pageOfs = PAGESIZE + pageOfs - dPOfs;
             } else

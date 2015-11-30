@@ -1,5 +1,5 @@
 // ==========================================================================
-//                 SeqAn - The Library for Sequence Analysis
+//                                   index2
 // ==========================================================================
 // Copyright (c) 2006-2015, Knut Reinert, FU Berlin
 // All rights reserved.
@@ -29,40 +29,32 @@
 // DAMAGE.
 //
 // ==========================================================================
+// Author: Alexander Aumann <aumann@in.tum.de>
+// ==========================================================================
+// Tests for the SeqAn module index2.
+// ==========================================================================
 
-#include <iostream>
-#include <fstream>
-#include <functional>
-#include <typeinfo>
-
-#define SEQAN_DEBUG
-//#define SEQAN_TEST
-#define SEQAN_ENABLE_CHECKPOINTS 0
+#ifndef TESTS_INDEX_TEST_INDEX_SUFFIX_TREES_H_
+#define TESTS_INDEX_TEST_INDEX_SUFFIX_TREES_H_
 
 #include <seqan/basic.h>
-#include <seqan/align.h>
-#include <seqan/find.h>
-#include <seqan/stream.h>
-#include <seqan/index.h>
-#include <seqan/index2.h>
 #include <seqan/sequence.h>
-#include <seqan/pipe.h>
 
-#include "test_index_helpers.h"
-#include "test_qgram_index.h"
+namespace seqan {
 
-using namespace std;
-using namespace seqan;
-
-SEQAN_BEGIN_TESTSUITE(test_index)
+template <typename Seq>
+bool contains(Seq const & str, typename Value<Seq>::Type const & ch)
 {
-	SEQAN_CALL_TEST(testStepSize);
-	SEQAN_CALL_TEST(testGappedShapes);
-	SEQAN_CALL_TEST(testUngappedShapes);
-	SEQAN_CALL_TEST(testUngappedQGramIndex);
-	SEQAN_CALL_TEST(testUngappedQGramIndexMulti);
-	SEQAN_CALL_TEST(testQGramFind);
-	SEQAN_CALL_TEST(testQGramFindExt);
-	SEQAN_CALL_TEST(testQGram2LFindExt);
+    using namespace seqan;
+    typename Iterator<const Seq>::Type it;
+    for (it = begin(str); it != end(str); ++it)
+    {
+        if (*it == ch)
+            return true;
+    }
+    return false;
 }
-SEQAN_END_TESTSUITE
+
+}  // namespace seqan
+
+#endif  // TESTS_INDEX_TEST_INDEX_SUFFIX_TREES_H_

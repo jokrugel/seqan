@@ -42,6 +42,7 @@
 #include <seqan/sequence.h>
 #include <seqan/seq_io.h>
 #include <seqan/index.h>
+#include <seqan/index2.h>
 #include <seqan/pipe.h>
 
 #include "test_index_helpers.h"
@@ -54,6 +55,10 @@ SEQAN_BEGIN_TESTSUITE(test_index)
 {
     SEQAN_CALL_TEST(testIndexModifiedStringReverseEsa);
     SEQAN_CALL_TEST(testIndexModifiedStringReverseFM);
+    SEQAN_CALL_TEST(testIndexModifiedStringReverseWotd);
+    SEQAN_CALL_TEST(testIndexModifiedStringReverseSttd64);
+    SEQAN_CALL_TEST(testIndexModifiedStringReverseLz);
+    SEQAN_CALL_TEST(testIndexModifiedStringReverseSadakane);
     SEQAN_CALL_TEST(testIndexModifiedStringViewEsa);
     SEQAN_CALL_TEST(testIndexModifiedStringViewFM);
     SEQAN_CALL_TEST(testIssue519);

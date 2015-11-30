@@ -66,10 +66,14 @@ template <typename T>
 struct MaximumValueUnsigned_ { static const T VALUE = ~(T)0; };
 #else
 template <typename T>
-struct MaximumValueUnsigned_ { static const T VALUE; };
+struct MaximumValueUnsigned_ { static const T VALUE = ~(T)0; };
 
-template <typename T>
-const T MaximumValueUnsigned_<T>::VALUE = ~(T)0;
+// Separating declaration and definition yields a compile error in VS2015: 
+//     error C2131: expression did not evaluate to a constant
+//     failure was caused by non - constant arguments or reference to a non - constant symbol
+
+//template <typename T>
+//const T MaximumValueUnsigned_<T>::VALUE = ~(T)0;
 #endif
 
 template <typename T>

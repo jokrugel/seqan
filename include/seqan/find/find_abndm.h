@@ -91,7 +91,7 @@ inline void _printMask(String <unsigned> const &  mask,unsigned start, unsigned 
  */
 
 
-struct AbndmAlgo;
+struct AbndmAlgo {};
 
 //////////////////////////////////////////////////////////////////////////////
 

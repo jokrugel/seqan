@@ -46,7 +46,7 @@ struct NonHierarchical;
 
 
 template <typename TVerification, typename TMultiFinder = WuManber>
-struct Pex;
+struct Pex {};
 
 typedef Pex<Hierarchical,AhoCorasick>      PexHierarchical;
 typedef Pex<NonHierarchical,AhoCorasick>   PexNonHierarchical;

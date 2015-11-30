@@ -496,6 +496,13 @@ setScoringScheme(Pattern<TNeedle, TSpec> & /*me*/,
 }
 //////////////////////////////////////////////////////////////////////////////
 
+template <typename TNeedle, typename TSpec>
+inline void
+clear(Pattern<TNeedle, TSpec> & /*me*/)
+{
+//dummy implementation for compatibility reasons
+}
+
 }  // namespace seqan
 
 #endif //#ifndef SEQAN_HEADER_...

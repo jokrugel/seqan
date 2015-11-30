@@ -1,5 +1,5 @@
 // ==========================================================================
-//                 SeqAn - The Library for Sequence Analysis
+//                                   index2
 // ==========================================================================
 // Copyright (c) 2006-2015, Knut Reinert, FU Berlin
 // All rights reserved.
@@ -29,40 +29,20 @@
 // DAMAGE.
 //
 // ==========================================================================
+// Author: Johannes Krugel <krugel@in.tum.de>
+// ==========================================================================
+// Tests for the SeqAn module index2.
+// ==========================================================================
 
-#include <iostream>
-#include <fstream>
-#include <functional>
-#include <typeinfo>
+#include "test_index_qgram_ext.h"
 
-#define SEQAN_DEBUG
-//#define SEQAN_TEST
-#define SEQAN_ENABLE_CHECKPOINTS 0
-
-#include <seqan/basic.h>
-#include <seqan/align.h>
-#include <seqan/find.h>
-#include <seqan/stream.h>
-#include <seqan/index.h>
-#include <seqan/index2.h>
-#include <seqan/sequence.h>
-#include <seqan/pipe.h>
-
-#include "test_index_helpers.h"
-#include "test_qgram_index.h"
-
-using namespace std;
 using namespace seqan;
 
-SEQAN_BEGIN_TESTSUITE(test_index)
+SEQAN_BEGIN_TESTSUITE(test_index_qgram_ext)
 {
-	SEQAN_CALL_TEST(testStepSize);
-	SEQAN_CALL_TEST(testGappedShapes);
-	SEQAN_CALL_TEST(testUngappedShapes);
-	SEQAN_CALL_TEST(testUngappedQGramIndex);
-	SEQAN_CALL_TEST(testUngappedQGramIndexMulti);
-	SEQAN_CALL_TEST(testQGramFind);
-	SEQAN_CALL_TEST(testQGramFindExt);
-	SEQAN_CALL_TEST(testQGram2LFindExt);
+    // Call tests.
+    SEQAN_CALL_TEST(test_index_qgram_construct_find);
+    SEQAN_CALL_TEST(test_index_qsample_construct_find);
+    SEQAN_CALL_TEST(test_index_qgram2l_construct_find);
 }
 SEQAN_END_TESTSUITE

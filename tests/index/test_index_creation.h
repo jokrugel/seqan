@@ -75,6 +75,62 @@ SEQAN_DEFINE_TEST(testIndexModifiedStringReverseFM)
     Iterator<TIndex, TopDown<> >::Type iter(index);
 }
 
+SEQAN_DEFINE_TEST(testIndexModifiedStringReverseWotd)
+{
+    typedef String<AminoAcid> TString;
+    typedef ModifiedString<TString, ModReverse> TReverse;
+    typedef Index<TReverse, IndexWotd<> > TIndex;
+
+    TString org("ACGXN");
+    TReverse rev(org);
+
+    TIndex index(rev);
+    Iterator<TIndex, TopDown<> >::Type iter(index);
+}
+
+SEQAN_DEFINE_TEST(testIndexModifiedStringReverseSttd64)
+{
+    typedef String<AminoAcid> TString;
+    typedef ModifiedString<TString, ModReverse> TReverse;
+    typedef Index<TReverse, IndexSttd64<> > TIndex;
+
+    TString org("ACGXN");
+    TReverse rev(org);
+
+    TIndex index(rev);
+    Iterator<TIndex, TopDown<> >::Type iter(index);
+}
+
+SEQAN_DEFINE_TEST(testIndexModifiedStringReverseLz)
+{
+    typedef String<AminoAcid> TString;
+    typedef ModifiedString<TString, ModReverse> TReverse;
+    typedef Index<TReverse, IndexLZ<> > TIndex;
+
+    TString org("ACGXN");
+    TReverse rev(org);
+
+    TIndex index(rev);
+    Finder<TIndex> fdr(index);
+    bool ret = find(fdr, "XG");
+    SEQAN_ASSERT(ret);
+}
+
+SEQAN_DEFINE_TEST(testIndexModifiedStringReverseSadakane)
+{
+    typedef String<AminoAcid> TString;
+    typedef ModifiedString<TString, ModReverse> TReverse;
+    typedef Index<TReverse, IndexSadakane<> > TIndex;
+
+    TString org("ACGXN");
+    TReverse rev(org);
+
+    TIndex index(rev);
+    Finder<TIndex> fdr(index);
+    bool ret = find(fdr, "XG");
+    SEQAN_ASSERT(ret);
+}
+
 SEQAN_DEFINE_TEST(testIndexModifiedStringViewEsa)
 {
     typedef String<AminoAcid> TString;

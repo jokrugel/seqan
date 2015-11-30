@@ -1,7 +1,7 @@
 // ==========================================================================
-//                 SeqAn - The Library for Sequence Analysis
+//                             find_index_approx
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2011, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -29,40 +29,40 @@
 // DAMAGE.
 //
 // ==========================================================================
+// Author: Johannes Krugel <krugel@in.tum.de>
+// ==========================================================================
+// Facade header for module find_index_approx.
+// ==========================================================================
 
-#include <iostream>
+#ifndef SEQAN_FIND_INDEX_APPROX_H_
+#define SEQAN_FIND_INDEX_APPROX_H_
+
+// ===========================================================================
+// Prerequisites.
+// ===========================================================================
+
 #include <fstream>
-#include <functional>
-#include <typeinfo>
-
-#define SEQAN_DEBUG
-//#define SEQAN_TEST
-#define SEQAN_ENABLE_CHECKPOINTS 0
+#include <iostream>
+#include <locale>
+#include <string>
 
 #include <seqan/basic.h>
-#include <seqan/align.h>
+#include <seqan/file.h>
 #include <seqan/find.h>
-#include <seqan/stream.h>
 #include <seqan/index.h>
 #include <seqan/index2.h>
+#include <seqan/score.h>
+#include <seqan/seq_io.h>
 #include <seqan/sequence.h>
-#include <seqan/pipe.h>
 
-#include "test_index_helpers.h"
-#include "test_qgram_index.h"
+// ===========================================================================
+// First Header Group.
+// ===========================================================================
 
-using namespace std;
-using namespace seqan;
+#include <seqan/find_index_approx/find_index_approx_base.h>
+#include <seqan/find_index_approx/find_index_backtracking_finder.h>
+#include <seqan/find_index_approx/find_index_backtracking_pattern.h>
+#include <seqan/find_index_approx/find_index_partitioning_finder.h>
+#include <seqan/find_index_approx/find_index_partitioning_pattern.h>
 
-SEQAN_BEGIN_TESTSUITE(test_index)
-{
-	SEQAN_CALL_TEST(testStepSize);
-	SEQAN_CALL_TEST(testGappedShapes);
-	SEQAN_CALL_TEST(testUngappedShapes);
-	SEQAN_CALL_TEST(testUngappedQGramIndex);
-	SEQAN_CALL_TEST(testUngappedQGramIndexMulti);
-	SEQAN_CALL_TEST(testQGramFind);
-	SEQAN_CALL_TEST(testQGramFindExt);
-	SEQAN_CALL_TEST(testQGram2LFindExt);
-}
-SEQAN_END_TESTSUITE
+#endif  // SEQAN_FIND_INDEX_APPROX_H_

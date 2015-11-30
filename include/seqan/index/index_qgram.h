@@ -1871,7 +1871,7 @@ void createQGramIndexExt(Index<TText_, IndexQGram<TShapeSpec, TSpec> > &index)
     TSA &sa = indexSA(index);
     TDir &dir = indexDir(index);
     TShape &shape = indexShape(index);
-    TBucketMap &bucketMap = index.bucketMap;
+    // TBucketMap &bucketMap = index.bucketMap;
 
     // signed characters behave different than unsigned when compared
     // to get the same index with signed or unsigned chars we simply cast them to unsigned

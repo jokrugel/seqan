@@ -342,6 +342,38 @@ SEQAN_DEFINE_TEST(testQGramFind)
 */
 }
 
+SEQAN_DEFINE_TEST(testQGramFindExt)
+{
+    typedef Index<String<char>, IndexQGram<UngappedShape<2> > > TQGramIndex;
+    TQGramIndex idx("to be or not to be");
+    Finder<TQGramIndex, FinderQGramExtended<> > finder(idx);
+
+    // TODO(krugel) It does not work to call find(finder, "be") directly
+    String<char> ndl = "be";
+
+    SEQAN_ASSERT(find(finder, ndl));
+    SEQAN_ASSERT(position(finder) == 3);
+    SEQAN_ASSERT(find(finder, ndl));
+    SEQAN_ASSERT(position(finder) == 16);
+    SEQAN_ASSERT(!find(finder, ndl));
+}
+
+SEQAN_DEFINE_TEST(testQGram2LFindExt)
+{
+    typedef Index<String<char>, IndexQGram2L<UngappedShape<2> > > TQGramIndex;
+    TQGramIndex idx("to be or not to be");
+    Finder<TQGramIndex, FinderQGramExtended<> > finder(idx);
+
+    // TODO(krugel) It does not work to call find(finder, "be") directly
+    String<char> ndl = "be";
+
+    SEQAN_ASSERT(find(finder, ndl));
+    SEQAN_ASSERT(position(finder) == 3);
+    SEQAN_ASSERT(find(finder, ndl));
+    SEQAN_ASSERT(position(finder) == 16);
+    SEQAN_ASSERT(!find(finder, ndl));
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 
