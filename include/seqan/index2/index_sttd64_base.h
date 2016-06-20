@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -399,7 +399,6 @@ struct SupportsSuffixTreeIteration<IndexSttd64<TSpec> > {
 template<typename TText_, typename TConfig>
 inline bool createPartitions(Index<TText_, IndexSttd64<TConfig> > & index)
 {
-    SEQAN_CHECKPOINT;
     typedef Index<TText_, IndexSttd64<TConfig> > TIndex;
     typedef typename Fibre<TIndex, Sttd64Text>::Type TText;
 
@@ -465,7 +464,6 @@ _createPartitionFiles(Index<TText, IndexSttd64<TConfig> > & index,
                       std::string dirName,
                       unsigned numPartitions)
 {
-    SEQAN_CHECKPOINT;
     typedef Index<TText, IndexSttd64<TConfig> > TIndex;
 
     resize(index.partitions, numPartitions);
@@ -487,7 +485,6 @@ _createPartitionFiles(Index<TText, IndexSttd64<TConfig> > & index,
 template<typename _TText, typename TConfig>
 inline bool createSuffixTrees(Index<_TText, IndexSttd64<TConfig> > & index)
 {
-    SEQAN_CHECKPOINT;
     typedef Index<_TText, IndexSttd64<TConfig> > TIndex;
     typedef typename Fibre<TIndex, Sttd64Text>::Type TText;
     unsigned const prefLen = TIndex::PREFIX_LENGTH;
@@ -754,7 +751,6 @@ inline bool _openFibreFile(TFibre & openedFile,
                            bool reOpen,
                            bool readOnly)
 {
-    SEQAN_CHECKPOINT;
     std::ostringstream ostr;
     ostr << partitionNumber;
     std::string currentPartitionSuffix = ostr.str();
@@ -827,7 +823,6 @@ inline bool _unloadFibreFile(TFibre & closedFile,
                              std::string const dirName,
                              std::string const fibreNamePart)
 {
-    SEQAN_CHECKPOINT;
     if (!inMem)
     {
         //closes the fibre file only iff a dirName was given (i.e. not only temp files used
@@ -981,8 +976,6 @@ inline unsigned _longestCommonPrefixBlock(TText const & text,
                                      unsigned lcpOverall,
                                      TTextBuffer & curLcpTextCopy) //buffer allocated outside of loops
 {
-    SEQAN_CHECKPOINT;
-
     unsigned maxLcpCurrentBlock = 2;
     unsigned currLcpCurrentBlock;
 
@@ -1291,7 +1284,6 @@ inline void _printPositions(TInfixPartSuffices const & partSuffices)
 template<typename TTree>
 inline void _printRawTreeTable(TTree const & treeTable, std::ostream & out = std::cout)
 {
-    SEQAN_CHECKPOINT;
     typename Iterator<TTree const>::Type treeIt;
     Sttd64Node_ node;
     //out << "Tree table: ";
@@ -1308,7 +1300,6 @@ inline void _printRawTreeTable(TTree const & treeTable, std::ostream & out = std
 template<typename TTree>
 inline void _tempFillPartTreeLeafDepths(TTree & tree)
 {
-    SEQAN_CHECKPOINT;
     Sttd64Node_ root;
     root = getValue(tree, 0);
     if (root.isLeaf())
@@ -1329,7 +1320,6 @@ inline void _tempFillPartTreeLeafDepths(TTree & tree,
                               typename Position<TTree>::Type currentFatherPos,
                               unsigned currentDepth)
 {
-    SEQAN_CHECKPOINT;
     typename Position<TTree>::Type childPos;
     Sttd64Node_ father;
     Sttd64Node_ child;
@@ -1359,7 +1349,6 @@ inline void _tempFillPartTreeLeafDepths(TTree & tree,
 template<typename TTree>
 inline void _printPartTree(TTree const & tree, bool printDepthsInLeaves, std::ostream & out = std::cout)
 {
-    SEQAN_CHECKPOINT;
     Sttd64Node_ root;
     root = getValue(tree, 0);
     if (root.isLeaf())
@@ -1386,7 +1375,6 @@ inline void _printPartTreeRec(TTree const & tree,
                               bool printDepthsInLeaves,
                               std::ostream & out = std::cout)
 {
-    SEQAN_CHECKPOINT;
     //typedef typename Index<TText, IndexSttd64<TConfig> > TIndex;
     typename Position<TTree>::Type childPos;
     //typename Iterator<TIndex::TTree const> treeIt;
@@ -1424,7 +1412,6 @@ inline void _printPartTreeRec(TTree const & tree,
 template<typename TText, typename TConfig>
 inline void clear(Index<TText, IndexSttd64<TConfig> > & index)
 {
-    SEQAN_CHECKPOINT;
     //typedef Index<TText, IndexSttd64<TConfig> > TIndex;
     //typename Iterator<typename TIndex::TSufficesParts>::Type partitionsIt;
     //typename Iterator<typename TIndex::TTrees>::Type treesIt;
@@ -1452,7 +1439,6 @@ inline bool _getPartitionNumber(unsigned & partitionNum,
                                 Index<TText_, IndexSttd64<TConfig> > const & index,
                                 TSeq const & prefix)
 {
-    SEQAN_CHECKPOINT;
     typedef Index<TText_, IndexSttd64<TConfig> > TIndex;
     typedef typename Fibre<TIndex const, Sttd64Text>::Type TText;
     //typename Iterator<typename Infix<TText>::Type>::Type prefixIt;
@@ -1524,7 +1510,6 @@ inline void _getPrefixForPartitionNumber(TSeq & prefix,
                                          unsigned prefixLenTotal,
                                          unsigned returnedPrefLen)
 {
-    SEQAN_CHECKPOINT;
     //unsigned const numPartitions = pow(static_cast<double>(alphabetSize), static_cast<double>(prefixLenTotal));
     SEQAN_ASSERT_LEQ(partitionNumber, static_cast<unsigned>(pow(static_cast<double>(alphabetSize), static_cast<double>(prefixLenTotal))));
     SEQAN_ASSERT_GEQ(returnedPrefLen, 0u);
@@ -1554,20 +1539,17 @@ void _indexRequireTopDownIteration(Index<TText, IndexSttd64<TSpec> > &index)
 
 template <typename TText, typename TSpec, typename TSpecAlg>
 inline bool indexCreate(Index<TText, TSpec> &index, Sttd64SuffixTrees, TSpecAlg const) {
-    SEQAN_CHECKPOINT;
     //atm only one algo, so std creation routine is called
     return createSuffixTrees(index);
 }
 
 template <typename TText, typename TSpec, typename TSpecAlg>
 inline bool indexCreate(Index<TText, TSpec> &index, Sttd64VirtualTree, TSpecAlg const) {
-    SEQAN_CHECKPOINT;
     return indexRequire(index, Sttd64SuffixTrees());
 }
 
 template <typename TText, typename TSpec, typename TSpecAlg>
 inline bool indexCreate(Index<TText, TSpec> &index, Sttd64Partitions, TSpecAlg const) {
-    SEQAN_CHECKPOINT;
     //atm only one algo, so std creation routine is called
     return createPartitions(index);
 }

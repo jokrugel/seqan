@@ -1,7 +1,7 @@
 // ==========================================================================
 //                         Mason - A Read Simulator
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ void IdSplitter::open()
     close();
     for (unsigned i = 0; i < numContigs; ++i)
     {
-#if defined(PLATFORM_WINDOWS)
+#if defined(STDLIB_VS)
         char fileNameBuffer[1000];
         char filePathBuffer[1000];
         //  Gets the temp path env string (no guarantee it's a valid path).
@@ -123,9 +123,9 @@ void IdSplitter::close()
         if (files[i])
         {
             delete files[i];
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
             DeleteFile(fileNames[i].c_str());
-#endif  // #ifdef PLATFORM_WINDOWS
+#endif  // #ifdef STDLIB_VS
             files[i] = 0;
         }
     files.clear();
@@ -208,8 +208,8 @@ std::pair<int, int> ContigPicker::pick()
     int rID = 0;
     if (lengthSums.size() > 1u)
     {
-        seqan::Pdf<seqan::Uniform<__int64> > pdf(0, lengthSums.back() - 1);
-        __int64 x = pickRandomNumber(rng, pdf);
+        std::uniform_int_distribution<int64_t> dist(0, lengthSums.back() - 1);
+        int64_t x = dist(rng);
         for (unsigned i = 0; i < lengthSums.size(); ++i)
         {
             if (x >= lengthSums[i])
@@ -220,7 +220,8 @@ std::pair<int, int> ContigPicker::pick()
     }
 
     // Pick haplotype id.
-    int hID = pickRandomNumber(rng, seqan::Pdf<seqan::Uniform<int> >(0, numHaplotypes - 1));
+    std::uniform_int_distribution<int> dist2(0, numHaplotypes - 1);
+    int hID = dist2(rng);
 
     return std::make_pair(rID, hID);
 }

@@ -1,7 +1,7 @@
 // ==========================================================================
 //                 SeqAn - The Library for Sequence Analysis
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -67,13 +67,13 @@ SEQAN_DEFINE_TEST(test_misc_terminal_get_terminal_size)
     unsigned cols = maxValue<unsigned>(), rows = maxValue<unsigned>();
     bool succ = getTerminalSize(cols, rows);
 
-#if !defined(PLATFORM_WINDOWS)
+#if !defined(STDLIB_VS)
     SEQAN_ASSERT(succ);
     SEQAN_ASSERT_NEQ(cols, maxValue<unsigned>());
     SEQAN_ASSERT_NEQ(rows, maxValue<unsigned>());
-#else  // #if !defined(PLATFORM_WINDOWS)
+#else  // #if !defined(STDLIB_VS)
     SEQAN_ASSERT_NOT(succ);
-#endif  // #if !defined(PLATFORM_WINDOWS)
+#endif  // #if !defined(STDLIB_VS)
 }
 
 SEQAN_BEGIN_TESTSUITE(test_misc) {

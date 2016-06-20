@@ -6,8 +6,8 @@
 # CMakeLists.txt file for the index2 module tests.
 # ===========================================================================
 
-cmake_minimum_required (VERSION 2.8.2)
-project (seqan_tests_index2)
+cmake_minimum_required (VERSION 3.0.0)
+project (seqan_tests_index2 CXX)
 message (STATUS "Configuring tests/index2")
 
 # ----------------------------------------------------------------------------

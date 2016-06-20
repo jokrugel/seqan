@@ -1,7 +1,7 @@
 // ==========================================================================
 //                             find_index_approx
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -91,7 +91,6 @@ struct Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPa
     Pattern()
         : _state(TPattern::STATE_EMPTY)
     {
-        SEQAN_CHECKPOINT;
     }
 
     // TODO(krugel) Explicit definition should normally not be necessary?
@@ -110,7 +109,6 @@ struct Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPa
     {
         _piecePattern = rhs._piecePattern;
         _verifyPattern = rhs._verifyPattern;
-        SEQAN_CHECKPOINT;
     }
 
     template <typename TNeedle2>
@@ -125,7 +123,6 @@ struct Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPa
         , _numberOfPieces(0u)
         , _pieceNo()
     {
-        SEQAN_CHECKPOINT;
     }
 
     template <typename TNeedle2>
@@ -140,7 +137,6 @@ struct Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPa
         , _numberOfPieces(0u)
         , _pieceNo()
     {
-        SEQAN_CHECKPOINT;
     }
 
     template <typename TNeedle2>
@@ -155,7 +151,6 @@ struct Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPa
         , _numberOfPieces(0u)
         , _pieceNo()
     {
-        SEQAN_CHECKPOINT;
     }
 
     template <typename TNeedle2>
@@ -170,7 +165,6 @@ struct Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPa
         , _numberOfPieces(numberOfPieces)
         , _pieceNo(0u)
     {
-        SEQAN_CHECKPOINT;
     }
 };
 
@@ -285,7 +279,6 @@ template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typena
 inline void
 _setDefaultNumberOfPieces(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & /* finder not used here */,
         Pattern<TNeedle, Partitioning<IntoExactSearch, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef typename Value<TScore>::Type                    TScoreValue;
     SEQAN_ASSERT_LEQ_MSG(scoreLimit(pattern), 0, "Parameter scoreLimit has to be a non-positive value, since the scoring scheme is EditDistanceScore.");
 
@@ -298,7 +291,6 @@ template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typena
 inline void
 _setDefaultNumberOfPieces(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder,
         Pattern<TNeedle, Partitioning<Intermediate, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef typename Value<TScore>::Type                    TScoreValue;
     typedef typename Value<TText>::Type                     TAlphabet;
     typedef typename ValueSize<TAlphabet>::Type             TAlphabetSize;
@@ -323,7 +315,6 @@ template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typena
 inline void
 _setDefaultNumberOfPieces(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & /*finder*/,
         Pattern<TNeedle, Partitioning<PartitioningHierarchical, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     SEQAN_ASSERT_LEQ_MSG(scoreLimit(pattern), 0, "Parameter scoreLimit has to be a non-positive value, since the scoring scheme is EditDistanceScore.");
     pattern._numberOfPieces = std::min(- scoreLimit(pattern) + 1, 2);
 }
@@ -332,7 +323,6 @@ _setDefaultNumberOfPieces(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TP
 template <typename TNeedle, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline void
 _setPieceScoreLimit(Pattern<TNeedle, Partitioning<IntoExactSearch, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     pattern._pieceScoreLimit = 0;
     return;
 }
@@ -341,7 +331,6 @@ _setPieceScoreLimit(Pattern<TNeedle, Partitioning<IntoExactSearch, TScore, TPiec
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline void
 _setPieceScoreLimit(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef typename Value<TScore>::Type                    TScoreValue;
     SEQAN_ASSERT_GT(pattern._numberOfPieces, 0u);
     pattern._pieceScoreLimit = scoreLimit(pattern) / (TScoreValue) pattern._numberOfPieces; // round downwards
@@ -355,7 +344,6 @@ inline void
 _split(TNeedle & needle, TPosition numberOfPieces, TNeedles & set) {
     typedef typename Size<TNeedle>::Type                    TSize;
 
-    SEQAN_CHECKPOINT;
     SEQAN_ASSERT_GT(numberOfPieces, 0u);
     TPosition len  = length(needle) / numberOfPieces;
     TPosition rest = length(needle) % numberOfPieces;
@@ -396,7 +384,6 @@ template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typena
 inline bool
 findBegin(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder,
         Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern, TScoreValue scoreLimit2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
 
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
@@ -412,7 +399,6 @@ template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typena
 inline bool
 findBegin(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder,
         Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     typedef typename Position<TText>::Type                  TPosition;
 
@@ -451,7 +437,6 @@ template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typena
 inline bool
 myFindBegin(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder,
         Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     return findBegin(finder, pattern);
 }
 
@@ -460,7 +445,6 @@ inline bool
 find(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder,
         Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern,
         const TScoreValue2 scoreLimit2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     if(pattern._state == TPattern::STATE_EMPTY || pattern._state == TPattern::STATE_INITIAL) {
         setScoreLimit(pattern, scoreLimit2);
@@ -476,7 +460,6 @@ template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typena
 inline bool
 find(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder,
         Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     //typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     typedef Index<TText, TIndexSpec>                        TIndex;
@@ -666,21 +649,18 @@ find(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVeri
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline TScore const &
 scoringScheme(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return pattern._scoringScheme;
 }
 
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline typename Value<TScore>::Type
 scoreLimit(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return pattern._scoreLimit;
 }
 
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline typename Value<TScore>::Type
 getScore(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
               || pattern._state == TPattern::STATE_BEGIN_FOUND
@@ -692,7 +672,6 @@ getScore(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerify
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline typename Value<TScore>::Type
 getBeginScore(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     SEQAN_ASSERT_EQ(pattern._state, TPattern::STATE_BEGIN_FOUND);
     if (pattern._scoreLimit == 0u) return 0u;
@@ -702,7 +681,6 @@ getBeginScore(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TV
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline typename Value<TScore>::Type
 getBeginScore(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     SEQAN_ASSERT_EQ(pattern._state, TPattern::STATE_BEGIN_FOUND);
     if (pattern._scoreLimit == 0u) return 0u;
@@ -716,28 +694,24 @@ getBeginScore(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TV
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline TNeedle const &
 host(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return value(pattern._host);
 }
 
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline TNeedle &
 host(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     return value(pattern._host);
 }
 
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline TNeedle const &
 needle(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return host(pattern);
 }
 
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline TNeedle &
 needle(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     return host(pattern);
 }
 
@@ -748,7 +722,6 @@ needle(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPa
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline typename Size<TNeedle>::Type
 length(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return length(needle(pattern));
 }
 
@@ -759,7 +732,6 @@ length(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPa
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec, typename TTag>
 inline typename Iterator<TNeedle const, Tag<TTag> const>::Type
 begin(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     SEQAN_ASSERT_EQ(pattern._state, TPattern::STATE_BEGIN_FOUND);
     return begin(needle(pattern), spec);
@@ -768,7 +740,6 @@ begin(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPat
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec, typename TTag>
 inline typename Iterator<TNeedle const, Tag<TTag> const>::Type
 end(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
               || pattern._state == TPattern::STATE_BEGIN_FOUND
@@ -779,7 +750,6 @@ end(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatte
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline typename Position<TNeedle>::Type
 beginPosition(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     SEQAN_ASSERT_EQ(pattern._state, TPattern::STATE_BEGIN_FOUND);
     return 0u;
@@ -788,7 +758,6 @@ beginPosition(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TV
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline typename Position<TNeedle>::Type
 endPosition(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
               || pattern._state == TPattern::STATE_BEGIN_FOUND
@@ -803,7 +772,6 @@ endPosition(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVer
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec, typename TScoreValue2>
 inline void
 setScoreLimit(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern, TScoreValue2 scoreLimit2) {
-    SEQAN_CHECKPOINT;
     clear(pattern);
     pattern._scoreLimit = scoreLimit2;
 }
@@ -811,7 +779,6 @@ setScoreLimit(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TV
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec, typename TScore2>
 inline void
 setScoringScheme(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern, TScore2 const & scoringScheme2) {
-    SEQAN_CHECKPOINT;
     clear(pattern);
     pattern._scoringScheme = scoringScheme2;
 }
@@ -823,7 +790,6 @@ setScoringScheme(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec,
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec, typename TPiecesSize>
 inline void
 setNumberOfPieces(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern, TPiecesSize numberOfPieces) {
-    SEQAN_CHECKPOINT;
     clear(pattern);
     pattern._numberOfPieces = numberOfPieces;
 }
@@ -837,7 +803,6 @@ setNumberOfPieces(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec, typename TNeedle2>
 inline void
 setHost(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern, TNeedle2 && needle2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     clear(pattern);
     setValue(pattern._host, std::forward<TNeedle2>(needle2));
@@ -850,7 +815,6 @@ setHost(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyP
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec, typename TNeedle2>
 inline void
 setHost(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern, TNeedle2 & needle2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     clear(pattern);
     setValue(pattern._host, needle2);
@@ -861,7 +825,6 @@ setHost(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyP
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec, typename TNeedle2>
 inline void
 setHost(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern, TNeedle2 const & needle2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     clear(pattern);
     setValue(pattern._host, needle2);
@@ -878,7 +841,6 @@ setHost(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyP
 template <typename TNeedle, typename TSpec, typename TScore, typename TPiecePatternSpec, typename TVerifyPatternSpec>
 inline void
 clear(Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, Partitioning<TSpec, TScore, TPiecePatternSpec, TVerifyPatternSpec> > TPattern;
     if (pattern._state != TPattern::STATE_EMPTY) pattern._state = TPattern::STATE_INITIAL;
     //pattern._currentScore = 0;

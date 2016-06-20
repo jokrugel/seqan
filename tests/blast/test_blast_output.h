@@ -103,7 +103,7 @@ _testBlastOutputGenerateContent(TFile & file,
     typedef StringSet<CharString> TSIds;
 
     typedef Gaps<String<AminoAcid>, ArrayGaps> TGaps;
-    typedef BlastMatch<TGaps, TGaps, __uint32, typename Value<TQIds>::Type, typename Value<TSIds>::Type> TBlastMatch;
+    typedef BlastMatch<TGaps, TGaps, uint32_t, typename Value<TQIds>::Type, typename Value<TSIds>::Type> TBlastMatch;
     typedef BlastRecord<TBlastMatch> TBlastRecord;
 
     TQueries queries;
@@ -637,6 +637,19 @@ SEQAN_DEFINE_TEST(test_blast_write_report)
 SEQAN_DEFINE_TEST(test_blast_write_report_constexpr)
 {
     BlastIOContext<Blosum62, BlastProgram::BLASTP> context;
+
+    _testBlastOutput(context, BlastReport());
+}
+
+SEQAN_DEFINE_TEST(test_blast_write_report_constexpr_dynmatrix)
+{
+    SelectableAminoAcidMatrix sel;
+    SEQAN_ASSERT(getScoreMatrixId(sel) != AminoAcidScoreMatrixID::BLOSUM62);
+    setScoreMatrixById(sel, AminoAcidScoreMatrixID::BLOSUM62);
+    SEQAN_ASSERT(getScoreMatrixId(sel) == AminoAcidScoreMatrixID::BLOSUM62);
+
+    BlastIOContext<SelectableAminoAcidMatrix, BlastProgram::BLASTP> context;
+    context.scoringScheme._internalScheme = sel;
 
     _testBlastOutput(context, BlastReport());
 }

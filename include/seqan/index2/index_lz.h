@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -83,7 +83,6 @@ namespace impl
         data_length(0),
         data(0)
         {
-            SEQAN_CHECKPOINT
         }
 
         __String(const __String &other):
@@ -92,16 +91,12 @@ namespace impl
         data_length(0),
         data(0)
         {
-            SEQAN_CHECKPOINT
-
             resize(*this, other.data_length, Generous());
 
             memcpy(data, other.data, (size_t) ceil(other.data_length * (size_t) other.BITS_PER_VALUE / (double) BitsPerValue<TBitBin>::VALUE) * BytesPerValue<TBitBin>::VALUE);
         }
 
         ~__String() {
-            SEQAN_CHECKPOINT
-
             delete[] data;
         }
     };
@@ -117,7 +112,6 @@ namespace impl
         HashTable(const unsigned char bitsPerValue = 0):
         data(bitsPerValue)
         {
-            SEQAN_CHECKPOINT
         }
     };
 
@@ -149,7 +143,6 @@ namespace impl
         nearClosingParenthesisPositions(bitsPerValue(minFarValue - 1)),
         farClosingParenthesisPositions(BitsPerValue<TSize>::VALUE)
         {
-            SEQAN_CHECKPOINT
         }
     };
 
@@ -169,7 +162,6 @@ namespace impl
         children_length(0),
         children(0)
         {
-            SEQAN_CHECKPOINT
         }
     };
 
@@ -192,7 +184,6 @@ namespace impl
         endPositionSamples(),
         hasPseudoEndingCharacter(false)
         {
-            SEQAN_CHECKPOINT
         }
     };
 
@@ -215,7 +206,6 @@ namespace impl
         children_capacity(0),
         children(0)
         {
-            SEQAN_CHECKPOINT
         }
     };
 
@@ -230,7 +220,6 @@ namespace impl
         trie(),
         ids()
         {
-            SEQAN_CHECKPOINT
         }
     };
 
@@ -246,8 +235,6 @@ namespace impl
     inline void
     open(TStream &in, String<TValue, TSpec> &me)
     {
-        SEQAN_CHECKPOINT
-
         typename Size<String<TValue, TSpec> >::Type data_length;
         in.read((char*) &data_length, sizeof(typename Size<String<TValue, TSpec> >::Type));
 
@@ -264,8 +251,6 @@ namespace impl
     inline void
     save(TStream &out, const String<TValue, TSpec> &me)
     {
-        SEQAN_CHECKPOINT
-
         const typename Size<String<TValue, TSpec> >::Type data_length = length(me);
         out.write((const char*) &data_length, sizeof(typename Size<String<TValue, TSpec> >::Type));
 
@@ -280,8 +265,6 @@ namespace impl
     inline size_t
     size(const String<TValue> &me)
     {
-        SEQAN_CHECKPOINT
-
         size_t _size = 0;
 
         _size += sizeof(TValue*); // me.data_begin
@@ -302,7 +285,6 @@ namespace impl
     inline TSize
     rank(const __String<bool, TSize, TBitBin> &me, const String<TSize> &rankSamples, const TSize rankSampleRate, const TSize _position)
     {
-        SEQAN_CHECKPOINT
         SEQAN_ASSERT_LT_MSG(_position, length(me) * me.BITS_PER_VALUE, "");
 
         TSize i = (_position / rankSampleRate) * rankSampleRate;
@@ -328,7 +310,6 @@ namespace impl
     inline TSize
     select(const __String<bool, TSize, TBitBin> &me, const String<TSize> &rankSamples, const TSize rankSampleRate, TSize numberOfOccurences)
     {
-        SEQAN_CHECKPOINT
         SEQAN_ASSERT_LT_MSG(numberOfOccurences, length(me) * me.BITS_PER_VALUE, "");
 
         TSize l = 0, r = (TSize) length(rankSamples);
@@ -368,8 +349,6 @@ namespace impl
     inline TSize
     excess(const __String<bool, TSize, TBitBin> &me, const String<TSize> &rankSamples, const TSize rankSampleRate, const TSize _position)
     {
-        SEQAN_CHECKPOINT
-
         return 2 * rank(me, rankSamples, rankSampleRate, _position) - _position;
     }
 
@@ -381,8 +360,6 @@ namespace impl
     inline void
     clear(__String<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         me.data_length = 0;
     }
 
@@ -390,8 +367,6 @@ namespace impl
     inline void
     appendValue(__String<TTargetValue, TSize, TBitBin> &me, const TSourceValue &_value, const Tag<TExpand> tag)
     {
-        SEQAN_CHECKPOINT
-
         const TSize _position = length(me);
 
         resize(me, _position + 1, tag);
@@ -402,7 +377,6 @@ namespace impl
     inline void
     assignValue(__String<TTargetValue, TSize, TBitBin> &me, const TSize _position, const TSourceValue &_value)
     {
-        SEQAN_CHECKPOINT
         SEQAN_ASSERT_LEQ_MSG(_position, length(me), "");
         // TODO(krugel): changed from SEQAN_ASSERT_LT_MSG to SEQAN_ASSERT_LEQ_MSG. Correct?
 
@@ -420,7 +394,6 @@ namespace impl
     inline TValue
     getValue(const __String<TValue, TSize, TBitBin> &me, const TSize _position)
     {
-        SEQAN_CHECKPOINT
         SEQAN_ASSERT_LEQ_MSG(_position, length(me), "");
         // TODO(krugel): changed from SEQAN_ASSERT_LT_MSG to SEQAN_ASSERT_LEQ_MSG. Correct?
 
@@ -440,8 +413,6 @@ namespace impl
     const unsigned char*
     getByteString(const __String<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         return (unsigned char*) me.data;
     }
 
@@ -449,8 +420,6 @@ namespace impl
     inline TSize
     capacity(const __String<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.data_capacity;
     }
 
@@ -458,8 +427,6 @@ namespace impl
     inline TSize
     length(const __String<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.data_length;
     }
 
@@ -467,8 +434,6 @@ namespace impl
     inline TSize
     reserve(__String<TValue, TSize, TBitBin> &me, const TSize new_capacity, const Tag<TExpand> /*tag*/)
     {
-        SEQAN_CHECKPOINT
-
         if(capacity(me) < new_capacity) {
             const size_t new_bitbin_capacity = (TSize) ceil((new_capacity * (size_t) me.BITS_PER_VALUE) / (double) BitsPerValue<TBitBin>::VALUE);
             const size_t old_bitbin_length = (TSize) ceil((length(me) * (size_t) me.BITS_PER_VALUE) / (double) BitsPerValue<TBitBin>::VALUE);
@@ -490,8 +455,6 @@ namespace impl
     inline TSize
     resize(__String<TValue, TSize, TBitBin> &me, const TSize new_length, const Tag<TExpand> tag)
     {
-        SEQAN_CHECKPOINT
-
         if(capacity(me) < new_length) {
             reserve(me, new_length, tag);
         }
@@ -505,8 +468,6 @@ namespace impl
     inline void
     open(TStream &in, __String<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         in.read((char*) &me.BITS_PER_VALUE, sizeof(unsigned char));
 
         TSize data_length;
@@ -522,8 +483,6 @@ namespace impl
     inline void
     save(TStream &out, const __String<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         out.write((const char*) &me.BITS_PER_VALUE, sizeof(unsigned char));
 
         out.write((const char*) &me.data_length, sizeof(TSize));
@@ -537,8 +496,6 @@ namespace impl
     inline size_t
     size(const __String<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         size_t _size = 0;
 
         _size += sizeof(unsigned char); // me.BITS_PER_VALUE
@@ -559,8 +516,6 @@ namespace impl
     inline void
     clear(HashTable<TKey, TValue, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         clear(me.data);
     }
 
@@ -568,8 +523,6 @@ namespace impl
     inline TKey
     reserve(HashTable<TKey, TValue, TBitBin> &me, const TKey new_capacity, const Generous)
     {
-        SEQAN_CHECKPOINT
-
         const TKey new_data_size = ((TKey) 1) << bitsPerValue(1.5 * new_capacity);
 
         if(length(me.data) < new_data_size) {
@@ -583,8 +536,6 @@ namespace impl
     inline void
     insertValue(HashTable<TKey, TValue, TBitBin> &me, const TKey &_key, const TValue &_value, const Insist)
     {
-        SEQAN_CHECKPOINT
-
         const TKey bitMask = length(me.data) - 1;
 
         TKey _position = (_key * me.PRIME1) & bitMask;
@@ -601,8 +552,6 @@ namespace impl
     inline TValue
     getFirstValue(const HashTable<TKey, TValue, TBitBin> &me, const TKey &_key, TKey &_position)
     {
-        SEQAN_CHECKPOINT
-
         _position = (_key * me.PRIME1) & (length(me.data) - 1);
 
         return getValue(me.data, _position);
@@ -612,8 +561,6 @@ namespace impl
     inline TValue
     getNextValue(const HashTable<TKey, TValue, TBitBin> &me, TKey &_position)
     {
-        SEQAN_CHECKPOINT
-
         _position = (_position + me.PRIME2) & (length(me.data) - 1);
 
         return getValue(me.data, _position);
@@ -623,8 +570,6 @@ namespace impl
     inline void
     open(TStream &in, HashTable<TKey, TValue, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         open(in, me.data);
     }
 
@@ -632,8 +577,6 @@ namespace impl
     inline void
     save(TStream &out, const HashTable<TKey, TValue, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         save(out, me.data);
     }
 
@@ -641,8 +584,6 @@ namespace impl
     inline size_t
     size(const HashTable<TKey, TValue, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         return size(me.data);
     }
 
@@ -654,8 +595,6 @@ namespace impl
     inline void
     clear(ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         clear(me.parentheses);
 
         clear(me.rankSamples);
@@ -672,8 +611,6 @@ namespace impl
     inline TSize
     reserve(ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, const TSize new_capacity, const Tag<TExpand> tag)
     {
-        SEQAN_CHECKPOINT
-
         const TSize new_parentheses_capacity = 2 * new_capacity;
 
         if(capacity(me.parentheses) < new_parentheses_capacity) {
@@ -688,8 +625,6 @@ namespace impl
     inline TSize
     length(const ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         return length(me.parentheses) / 2;
     }
 
@@ -697,8 +632,6 @@ namespace impl
     inline TValue
     getNodeValue(const ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, const TSize preorderId)
     {
-        SEQAN_CHECKPOINT
-
         return me.values[preorderId];
     }
 
@@ -706,7 +639,6 @@ namespace impl
     inline TSize
     getNodeParent(const ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, const TSize preorderId)
     {
-        SEQAN_CHECKPOINT
         SEQAN_ASSERT_LT_MSG(preorderId, length(me), "");
 
         TSize _position = select(me.parentheses, me.rankSamples, (TSize) RANK_SAMPLE_RATE, preorderId + 1);
@@ -756,7 +688,6 @@ namespace impl
     inline TSize
     getNodeFirstChild(const ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, const TSize preorderId, TSize &_position)
     {
-        SEQAN_CHECKPOINT
         SEQAN_ASSERT_LT_MSG(preorderId, length(me), "");
 
         _position = select(me.parentheses, me.rankSamples, (TSize) RANK_SAMPLE_RATE, preorderId + 1) + 1;
@@ -816,8 +747,6 @@ namespace impl
     inline TSize
     getNodeNextChild(const ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, TSize &_position)
     {
-        SEQAN_CHECKPOINT
-
         _position = __getClosingParenthesisPosition(me, _position) + 1;
         // check if there is a next child
         if(getValue(me.parentheses, _position) == false) {
@@ -839,8 +768,6 @@ namespace impl
     inline void
     __createNodeChildrenQueryStructure(ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, TSize &_position)
     {
-        SEQAN_CHECKPOINT
-
         // get the closing parenthesis position
         const TSize positionOfOpeningParenthesis = _position++;
         while(getValue(me.parentheses, _position) == false) {
@@ -864,8 +791,6 @@ namespace impl
     inline void
     createNodeChildrenQueryStructure(ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, const TSize numberOfNearClosingPositions, const TSize numberOfFarClosingPositions)
     {
-        SEQAN_CHECKPOINT
-
         me.nearClosingParenthesisPositions = HashTable<TSize, TSize, TBitBin>(bitsPerValue(me.MIN_FAR_VALUE - 1));
         reserve(me.nearClosingParenthesisPositions, numberOfNearClosingPositions, Generous());
 
@@ -884,8 +809,6 @@ namespace impl
     inline void
     __createNodeParentQueryStructure(ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, TSize &_position)
     {
-        SEQAN_CHECKPOINT
-
         const TSize positionOfParentParenthesis = _position++;
         while(getValue(me.parentheses, _position) == false) {
             // store the parent opening parenthesis position
@@ -908,8 +831,6 @@ namespace impl
     inline void
     createNodeParentQueryStructure(ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me, const TSize numberOfNearParentPositions, const TSize numberOfFarParentPositions)
     {
-        SEQAN_CHECKPOINT
-
         me.nearParentParenthesisPositions = HashTable<TSize, TSize, TBitBin>(bitsPerValue(me.MIN_FAR_VALUE - 1));
         reserve(me.nearParentParenthesisPositions, numberOfNearParentPositions, Generous());
 
@@ -925,8 +846,6 @@ namespace impl
     inline void
     createRankQueryStructure(ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         reserve(me.rankSamples, (TSize) ceil(length(me.parentheses) / (double) RANK_SAMPLE_RATE), Exact());
 
         const unsigned char *byteString = getByteString(me.parentheses);
@@ -949,8 +868,6 @@ namespace impl
     inline void
     open(TStream &in, ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         open(in, me.parentheses);
 
         open(in, me.rankSamples);
@@ -970,8 +887,6 @@ namespace impl
     inline void
     save(TStream &out, const ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         save(out, me.parentheses);
 
         save(out, me.rankSamples);
@@ -991,8 +906,6 @@ namespace impl
     inline size_t
     size(const ParenthesesTrie<TValue, TSize, TBitBin, RANK_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         size_t _size = 0;
 
         _size += size(me.parentheses);
@@ -1020,8 +933,6 @@ namespace impl
     inline TChildrenSize
     reserveChildren(LZNode<TIDValue, TValue, TChildrenSize> &me, const TChildrenSize new_children_capacity)
     {
-        SEQAN_CHECKPOINT
-
         if(childrenCapacity(me) < new_children_capacity) {
             TIDValue *new_children = new TIDValue[new_children_capacity];
             memcpy(new_children, me.children, me.children_length * (size_t) BytesPerValue<TIDValue>::VALUE);
@@ -1039,8 +950,6 @@ namespace impl
     inline void
     deleteChildren(LZNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         delete[] me.children;
     }
 
@@ -1048,8 +957,6 @@ namespace impl
     inline TChildrenSize
     childrenCapacity(const LZNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.children_capacity;
     }
 
@@ -1057,8 +964,6 @@ namespace impl
     inline TChildrenSize
     childrenLength(const LZNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.children_length;
     }
 
@@ -1066,8 +971,6 @@ namespace impl
     inline TIDValue*
     childrenBegin(const LZNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.children;
     }
 
@@ -1075,8 +978,6 @@ namespace impl
     inline TIDValue*
     childrenEnd(const LZNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.children + childrenLength(me);
     }
 
@@ -1084,8 +985,6 @@ namespace impl
     inline void
     appendChild(LZNode<TIDValue, TValue, TChildrenSize> &me, const TIDValue childId)
     {
-        SEQAN_CHECKPOINT
-
         if(childrenLength(me) == childrenCapacity(me)) {
             TChildrenSize new_children_capacity = me.children_capacity > 0 ? 2 * me.children_capacity : 2;
 
@@ -1109,8 +1008,6 @@ namespace impl
     inline void
     clear(LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         clear(me.trie);
 
         clear(me.ids);
@@ -1123,8 +1020,6 @@ namespace impl
     inline TSize
     length(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         return length(me.trie);
     }
 
@@ -1132,8 +1027,6 @@ namespace impl
     inline TSize
     getNodeId(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, const TSize preorderId)
     {
-        SEQAN_CHECKPOINT
-
         return getValue(me.ids, preorderId);
     }
 
@@ -1141,8 +1034,6 @@ namespace impl
     inline TSize
     getNodePreorderId(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, const TSize id)
     {
-        SEQAN_CHECKPOINT
-
         return getValue(me.rids, id);
     }
 
@@ -1150,8 +1041,6 @@ namespace impl
     inline TValue
     getNodeValue(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, const TSize preorderId)
     {
-        SEQAN_CHECKPOINT
-
         return getNodeValue(me.trie, preorderId);
     }
 
@@ -1159,8 +1048,6 @@ namespace impl
     inline TSize
     getNodeParent(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, const TSize preorderId)
     {
-        SEQAN_CHECKPOINT
-
         return getNodeParent(me.trie, preorderId);
     }
 
@@ -1168,8 +1055,6 @@ namespace impl
     inline TSize
     getNodeFirstChild(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, const TSize preorderId, TSize &_position)
     {
-        SEQAN_CHECKPOINT
-
         return getNodeFirstChild(me.trie, preorderId, _position);
     }
 
@@ -1177,8 +1062,6 @@ namespace impl
     inline TSize
     getNodeNextChild(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, TSize &_position)
     {
-        SEQAN_CHECKPOINT
-
         return getNodeNextChild(me.trie, _position);
     }
 
@@ -1203,8 +1086,6 @@ namespace impl
     inline TSize
     getNodeDepth(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, TSize preorderId)
     {
-        SEQAN_CHECKPOINT
-
         TSize depth = 0;
 
         while(preorderId != 0) {
@@ -1227,7 +1108,6 @@ namespace impl
     inline TSize
     getNodeEndTextPosition(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, const TSize id)
     {
-        SEQAN_CHECKPOINT
         SEQAN_ASSERT_LT_MSG(id, length(me), "");
 
         if(id % NODE_END_TEXT_POSTION_SAMPLE_RATE == 0) {
@@ -1254,8 +1134,6 @@ namespace impl
     inline TSize
     getTextLength(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         return getNodeEndTextPosition(me, length(me) - 1) + (!me.hasPseudoEndingCharacter ? 1 : 0);
     }
 
@@ -1263,8 +1141,6 @@ namespace impl
     inline void
     open(TStream &in, LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         open(in, me.trie);
 
         open(in, me.ids);
@@ -1277,8 +1153,6 @@ namespace impl
     inline void
     save(TStream &out, const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         save(out, me.trie);
 
         save(out, me.ids);
@@ -1291,8 +1165,6 @@ namespace impl
     inline size_t
     size(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
     {
-        SEQAN_CHECKPOINT
-
         return size(me.trie) + size(me.ids) + size(me.rids) + size(me.endPositionSamples);
     }
 
@@ -1304,8 +1176,6 @@ namespace impl
     inline TChildrenSize
     reserveChildren(LZRevNode<TIDValue, TValue, TChildrenSize> &me, const TChildrenSize new_children_capacity)
     {
-        SEQAN_CHECKPOINT
-
         if(childrenCapacity(me) < new_children_capacity) {
             TIDValue *new_children = new TIDValue[new_children_capacity];
             memcpy(new_children, me.children, me.children_length * (size_t) BytesPerValue<TIDValue>::VALUE);
@@ -1323,8 +1193,6 @@ namespace impl
     inline void
     deleteChildren(LZRevNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         delete[] me.children;
     }
 
@@ -1332,8 +1200,6 @@ namespace impl
     inline TChildrenSize
     childrenCapacity(const LZRevNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.children_capacity;
     }
 
@@ -1341,8 +1207,6 @@ namespace impl
     inline TChildrenSize
     childrenLength(const LZRevNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.children_length;
     }
 
@@ -1350,8 +1214,6 @@ namespace impl
     inline TIDValue*
     childrenBegin(const LZRevNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.children;
     }
 
@@ -1359,8 +1221,6 @@ namespace impl
     inline TIDValue*
     childrenEnd(const LZRevNode<TIDValue, TValue, TChildrenSize> &me)
     {
-        SEQAN_CHECKPOINT
-
         return me.children + childrenLength(me);
     }
 
@@ -1368,8 +1228,6 @@ namespace impl
     inline void
     appendChild(LZRevNode<TIDValue, TValue, TChildrenSize> &me, TIDValue id)
     {
-        SEQAN_CHECKPOINT
-
         if(childrenLength(me) == childrenCapacity(me)) {
             TChildrenSize new_children_capacity = me.children_capacity > 0 ? 2 * me.children_capacity : 2;
 
@@ -1393,8 +1251,6 @@ namespace impl
     inline void
     clear(LZRevTrie<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         clear(me.trie);
         clear(me.ids);
     }
@@ -1403,8 +1259,6 @@ namespace impl
     inline TSize
     length(const LZRevTrie<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         return length(me.trie);
     }
 
@@ -1412,8 +1266,6 @@ namespace impl
     inline TValue
     getNodeValue(const LZRevTrie<TValue, TSize, TBitBin> &me, const TSize preorderId)
     {
-        SEQAN_CHECKPOINT
-
         return getNodeValue(me.trie, preorderId);
     }
 
@@ -1421,8 +1273,6 @@ namespace impl
     inline TSize
     getNodeFirstChild(const LZRevTrie<TValue, TSize, TBitBin> &me, const TSize preorderId, TSize &_position)
     {
-        SEQAN_CHECKPOINT
-
         return getNodeFirstChild(me.trie, preorderId, _position);
     }
 
@@ -1430,8 +1280,6 @@ namespace impl
     inline TSize
     getNodeNextChild(const LZRevTrie<TValue, TSize, TBitBin> &me, TSize &_position)
     {
-        SEQAN_CHECKPOINT
-
         return getNodeNextChild(me.trie, _position);
     }
 
@@ -1439,8 +1287,6 @@ namespace impl
     inline TSize
     getNodeChild(const LZRevTrie<TValue, TSize, TBitBin> &me, const TSize preorderId, const TValue &_value)
     {
-        SEQAN_CHECKPOINT
-
         TSize _position;
         TSize childId = getNodeFirstChild(me, preorderId, _position);
         while(childId > 0) {
@@ -1465,8 +1311,6 @@ namespace impl
     inline TSize
     getForwardTriePreorderId(const LZRevTrie<TValue, TSize, TBitBin> &me, const TSize preorderId)
     {
-        SEQAN_CHECKPOINT
-
         return getValue(me.ids, preorderId);
     }
 
@@ -1474,8 +1318,6 @@ namespace impl
     inline void
     open(TStream &in, LZRevTrie<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         open(in, me.trie);
 
         open(in, me.ids);
@@ -1485,8 +1327,6 @@ namespace impl
     inline void
     save(TStream &out, const LZRevTrie<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         save(out, me.trie);
 
         save(out, me.ids);
@@ -1496,8 +1336,6 @@ namespace impl
     inline size_t
     size(const LZRevTrie<TValue, TSize, TBitBin> &me)
     {
-        SEQAN_CHECKPOINT
-
         return size(me.trie) + size(me.ids);
     }
 
@@ -1505,8 +1343,6 @@ namespace impl
     inline void
     __traverse(ParenthesesTrie<TValue, TSize, TBitBin> &me, const String<LZNode<TIDValue, TValue, TChildrenSize> > &trieNodes, const LZNode<TIDValue, TValue, TChildrenSize> &trieNode, TSize &numberOfNearClosingPositions, TSize &numberOfFarClosingPositions, TSize &numberOfNearParentPositions, TSize &numberOfFarParentPositions)
     {
-        SEQAN_CHECKPOINT
-
         const TSize positionOfOpeningParenthesis = length(me.parentheses);
 
         appendValue(me.parentheses, false, Insist());
@@ -1541,8 +1377,6 @@ namespace impl
     inline void
     __traverse(LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, String<LZNode<TIDValue, TValue, TChildrenSize> > &trieNodes, LZNode<TIDValue, TValue, TChildrenSize> &trieNode)
     {
-        SEQAN_CHECKPOINT
-
         for(TIDValue *it = childrenBegin(trieNode); it != childrenEnd(trieNode); ++it) {
             appendValue(me.ids, (TSize) *it, Insist());
 
@@ -1556,8 +1390,6 @@ namespace impl
     inline void
     createTrie(LZTrie<typename Value<TText>::Type, typename SAValue<TText>::Type, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, const TText &text, typename SAValue<TText>::Type &numberOfNearClosingPositions, typename SAValue<TText>::Type &numberOfFarClosingPositions, typename SAValue<TText>::Type &numberOfNearParentPositions, typename SAValue<TText>::Type &numberOfFarParentPositions)
     {
-        SEQAN_CHECKPOINT
-
         typedef typename Value<TText>::Type TValue;
         typedef typename SAValue<TText>::Type TSAValue;
 
@@ -1624,8 +1456,6 @@ namespace impl
     inline void
     createForwardTrie(LZTrie<typename Value<TText>::Type, typename SAValue<TText>::Type, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &me, const TText &text)
     {
-        SEQAN_CHECKPOINT
-
         typedef typename Value<TText>::Type TValue;
         typedef typename SAValue<TText>::Type TSAValue;
 
@@ -1684,8 +1514,6 @@ namespace impl
     inline void
     __traverse(const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &forwardTrie, TSize &parenthesisPosition, TSize &preorderId, String<TValue> &block, String<LZRevNode<TIDValue, TValue, TChildrenSize> > &trieNodes)
     {
-        SEQAN_CHECKPOINT
-
         appendValue(block, getNodeValue(forwardTrie, preorderId));
         typename Position<String<TValue> >::Type blockIt = length(block);
 
@@ -1737,8 +1565,6 @@ namespace impl
     inline void
     __traverse(ParenthesesTrie<TValue, TSize, TBitBin> &me, const String<LZRevNode<TIDValue, TValue, TChildrenSize> > &trieNodes, const LZRevNode<TIDValue, TValue, TChildrenSize> &trieNode, TSize &numberOfNearClosingPositions, TSize &numberOfFarClosingPositions)
     {
-        SEQAN_CHECKPOINT
-
         const TSize positionOfOpeningParenthesis = length(me.parentheses);
 
         appendValue(me.parentheses, false, Insist());
@@ -1764,8 +1590,6 @@ namespace impl
     inline void
     __traverse(LZRevTrie<TValue, TSize, TBitBin> &me, String<LZRevNode<TIDValue, TValue, TChildrenSize> > &trieNodes, LZRevNode<TIDValue, TValue, TChildrenSize> &trieNode)
     {
-        SEQAN_CHECKPOINT
-
         for(TIDValue *it = childrenBegin(trieNode); it != childrenEnd(trieNode); ++it) {
             appendValue(me.ids, (TSize) trieNodes[*it].forwardTriePreorderId, Insist());
 
@@ -1779,8 +1603,6 @@ namespace impl
     inline void
     createTrie(LZRevTrie<TValue, TSize, TBitBin> &me, const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &forwardTrie, TSize &numberOfNearClosingPositions, TSize &numberOfFarClosingPositions)
     {
-        SEQAN_CHECKPOINT
-
         String<LZRevNode<TIDValue, TValue, TChildrenSize> > trieNodes;
         reserve(trieNodes, (typename Size<String<LZRevNode<TIDValue, TValue, TChildrenSize> > >::Type) (1.33 * length(forwardTrie)));
 
@@ -1815,8 +1637,6 @@ namespace impl
     inline void
     createReverseTrie(LZRevTrie<TValue, TSize, TBitBin> &me, const LZTrie<TValue, TSize, TBitBin, NODE_END_TEXT_POSTION_SAMPLE_RATE> &forwardTrie)
     {
-        SEQAN_CHECKPOINT
-
         TSize numberOfNearClosingPositions, numberOfFarClosingPositions;
 
         if(ValueSize<TValue>::VALUE >= ULONG_MAX) {
@@ -1853,7 +1673,6 @@ public:
     forwardTrie(),
     reverseTrie()
     {
-        SEQAN_CHECKPOINT
     }
 };
 
@@ -1865,8 +1684,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t LZTRIE_NODE_E
 inline void
 clear(LZData<TValue, TSize, TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
 {
-    SEQAN_CHECKPOINT
-
     me.textLength = 0;
 
     clear(me.forwardTrie);
@@ -1877,8 +1694,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t LZTRIE_NODE_E
 inline void
 open(TStream &in, LZData<TValue, TSize, TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
 {
-    SEQAN_CHECKPOINT
-
     in.read((char*) &me.textLength, sizeof(TSize));
 
     impl::open(in, me.forwardTrie);
@@ -1889,7 +1704,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t LZTRIE_NODE_E
 inline void
 save(TStream &out, const LZData<TValue, TSize, TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
 {
-    SEQAN_CHECKPOINT
     out.write((const char*) &me.textLength, sizeof(TSize));
 
     impl::save(out, me.forwardTrie);
@@ -1900,8 +1714,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t LZTRIE_NODE_E
 inline size_t
 size(const LZData<TValue, TSize, TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> &me)
 {
-    SEQAN_CHECKPOINT
-
     size_t _size = 0;
 
     _size += sizeof(TSize); // TSize textLength
@@ -1931,7 +1743,6 @@ public:
     text(),
     data()
     {
-        SEQAN_CHECKPOINT
     }
 
     template<typename TOtherText>
@@ -1939,7 +1750,6 @@ public:
     text(_text),
     data()
     {
-        SEQAN_CHECKPOINT
     }
 };
 
@@ -1956,8 +1766,6 @@ template<typename TText, typename TBitBin, size_t LZTRIE_NODE_END_TEXT_POSTION_S
 inline void
 clear(Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me)
 {
-    SEQAN_CHECKPOINT
-
     clear(me.text);
     clear(me.data);
 }
@@ -1966,8 +1774,6 @@ template <typename TText, typename TBitBin, size_t LZTRIE_NODE_END_TEXT_POSTION_
 inline bool
 indexSupplied(Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me, FibreSA const)
 {
-    SEQAN_CHECKPOINT
-
     return me.data.textLength > 0;
 }
 
@@ -1975,8 +1781,6 @@ template <typename TText, typename TBitBin, size_t LZTRIE_NODE_END_TEXT_POSTION_
 inline bool
 indexSolveDependencies(Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me, FibreSA const)
 {
-    SEQAN_CHECKPOINT
-
     return indexSupplied(me, FibreText());
 }
 
@@ -1984,8 +1788,6 @@ template<typename TText, typename TBitBin, size_t LZTRIE_NODE_END_TEXT_POSTION_S
 inline bool
 indexCreate(Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me, FibreSA const)
 {
-    SEQAN_CHECKPOINT
-
     typedef typename Value<TText>::Type TValue;
     typedef typename SAValue<TText>::Type TSAValue;
 
@@ -2019,8 +1821,6 @@ template<typename TReturnText, typename TText, typename TBitBin, size_t LZTRIE_N
 inline TReturnText
 extract(const Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me, const typename Position<TText>::Type _begin, const typename Position<TText>::Type _end)
 {
-    SEQAN_CHECKPOINT
-
     typedef typename Value<TText>::Type TValue;
     typedef typename SAValue<TText>::Type TSAValue;
 
@@ -2077,8 +1877,6 @@ template<typename TText, typename TBitBin, size_t LZTRIE_NODE_END_TEXT_POSTION_S
 inline typename Value<TText>::Type
 extractValue(const Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me, typename Position<TText>::Type _position)
 {
-    SEQAN_CHECKPOINT
-
     typedef typename Value<TText>::Type TValue;
     typedef typename SAValue<TText>::Type TSAValue;
 
@@ -2122,8 +1920,6 @@ extractValue(const Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SA
 template <typename TText, typename TBitBin, size_t LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE>
 inline bool
 open(Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me, char const *filename) {
-    SEQAN_CHECKPOINT
-
     std::ifstream in;
 
     in.open(filename, std::ios::in | std::ios::binary);
@@ -2141,8 +1937,6 @@ open(Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &
 template <typename TText, typename TBitBin, size_t LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE>
 inline bool
 save(const Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me, char const *filename) {
-    SEQAN_CHECKPOINT
-
     std::ofstream out;
 
     out.open(filename, std::ios::out | std::ios::trunc | std::ios::binary);
@@ -2161,8 +1955,6 @@ template<typename TText, typename TBitBin, size_t LZTRIE_NODE_END_TEXT_POSTION_S
 inline size_t
 size(const Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_TEXT_POSTION_SAMPLE_RATE> > &me)
 {
-    SEQAN_CHECKPOINT
-
     return sizeof(Holder<TText>) + size(me.data);
 }
 

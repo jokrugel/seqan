@@ -1,7 +1,7 @@
 // ==========================================================================
 //                             find_index_approx
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -85,7 +85,6 @@ struct Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVe
         , _candidatePositions(0)
 #endif
     {
-        SEQAN_CHECKPOINT;
     }
 
     Finder(TIndex & index)
@@ -99,7 +98,6 @@ struct Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVe
         , _candidatePositions(0)
 #endif
     {
-        SEQAN_CHECKPOINT;
     }
 };
 
@@ -146,7 +144,6 @@ struct Finder<Index<TText, TIndexSpec>, FinderPartitioning<Default, Default, DoP
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline void
 printDebugInfo(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     std::cerr << "candidate positions = " << finder._candidatePositions << std::endl;
 }
 #endif
@@ -158,7 +155,6 @@ printDebugInfo(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderS
 template <typename TFinder, typename TPattern, typename TNeedle, typename TScoreValue>
 inline void
 preparePatterns(TFinder & finder, TPattern & pattern, StringSet<TNeedle> & needles, TScoreValue tolerance) {
-    SEQAN_CHECKPOINT;
     // Do nothing
     ignoreUnusedVariableWarning(finder);
     ignoreUnusedVariableWarning(pattern);
@@ -170,7 +166,6 @@ preparePatterns(TFinder & finder, TPattern & pattern, StringSet<TNeedle> & needl
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename TPattern, typename TNeedle, typename TScoreValue>
 inline void
 preparePatterns(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, True> > & finder, TPattern & pattern, StringSet<TNeedle> & needles, TScoreValue tolerance) {
-    SEQAN_CHECKPOINT;
     
     typedef True                                            DoPreparePatterns;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
@@ -204,7 +199,6 @@ preparePatterns(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinder
 template <typename TPieceFinder, typename TPattern, typename TPreparedPositions>
 inline void
 preparePiecePositions(TPieceFinder & pieceFinder, TPattern & pattern, TPreparedPositions & preparedPositions) {
-    SEQAN_CHECKPOINT;
     // Do nothing
     ignoreUnusedVariableWarning(pieceFinder);
     ignoreUnusedVariableWarning(pattern);
@@ -218,7 +212,6 @@ preparePiecePositions(TPieceFinder & pieceFinder, TPattern & pattern, TPreparedP
 template <typename TFinder, typename TPreparedPositions>
 inline void
 setPreparedPiecePositions(TFinder & finder, TPreparedPositions & preparedPositions) {
-    SEQAN_CHECKPOINT;
     // Do nothing
     ignoreUnusedVariableWarning(finder);
     ignoreUnusedVariableWarning(preparedPositions);
@@ -232,28 +225,24 @@ setPreparedPiecePositions(TFinder & finder, TPreparedPositions & preparedPositio
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline Index<TText, TIndexSpec> &
 haystack(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     return value(finder._holder);
 }
 
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline Index<TText, TIndexSpec> const &
 haystack(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder) {
-    SEQAN_CHECKPOINT;
     return value(finder._holder);
 }
 
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline Index<TText, TIndexSpec> &
 host(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     return value(finder._holder);
 }
 
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline Index<TText, TIndexSpec> const &
 host(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder) {
-    SEQAN_CHECKPOINT;
     return value(finder._holder);
 }
 
@@ -264,7 +253,6 @@ host(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVeri
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns, typename TTag>
 inline typename Iterator<Index<TText, TIndexSpec> const>::Type
 begin(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     SEQAN_ASSERT_EQ(finder._state, TFinder::STATE_BEGIN_FOUND);
     return begin(haystack(finder), spec) + beginPosition(finder);
@@ -273,7 +261,6 @@ begin(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVer
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns, typename TTag>
 inline typename Iterator<Index<TText, TIndexSpec> const>::Type
 begin(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     return begin(const_cast<TFinder const &>(finder), spec);
 }
@@ -281,7 +268,6 @@ begin(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVer
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns, typename TTag>
 inline typename Iterator<Index<TText, TIndexSpec> const>::Type
 end(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
     return begin(haystack(finder), spec) + endPosition(finder);
@@ -291,7 +277,6 @@ template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typena
 inline typename Iterator<Index<TText, TIndexSpec> const>::Type
 end(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder,
         Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     return end(const_cast<TFinder const &>(finder), spec);
 }
@@ -303,7 +288,6 @@ end(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerif
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline typename Position<Index<TText, TIndexSpec> const>::Type
 beginPosition(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
     //return beginPosition(finder._verifyRegion) - beginPosition(haystack(finder)) + beginPosition(finder._verifyFinder);
@@ -313,7 +297,6 @@ beginPosition(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSp
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline typename Position<Index<TText, TIndexSpec> >::Type
 beginPosition(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     return beginPosition(const_cast<TFinder const &>(finder));
 }
@@ -321,7 +304,6 @@ beginPosition(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSp
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline typename Position<Index<TText, TIndexSpec> const>::Type
 endPosition(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
     //return beginPosition(finder._verifyRegion) - beginPosition(haystack(finder)) + endPosition(finder._verifyFinder);
@@ -331,7 +313,6 @@ endPosition(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline typename Position<Index<TText, TIndexSpec> >::Type
 endPosition(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     return endPosition(const_cast<TFinder const &>(finder));
 }
@@ -339,7 +320,6 @@ endPosition(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline typename Position<Index<TText, TIndexSpec> const>::Type
 position(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
     return endPosition(finder) - 1u;
@@ -348,7 +328,6 @@ position(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, T
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline typename Position<Index<TText, TIndexSpec> >::Type
 position(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     return position(const_cast<TFinder const &>(finder));
 }
@@ -360,14 +339,12 @@ position(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, T
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline typename Size<Index<TText, TIndexSpec> const>::Type
 length(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder) {
-    SEQAN_CHECKPOINT;
     return endPosition(finder) - beginPosition(finder);
 }
 
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline typename Size<Index<TText, TIndexSpec> >::Type
 length(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     return length(const_cast<TFinder const &>(finder));
 }
@@ -379,14 +356,12 @@ length(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVe
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline bool
 empty(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > const & finder) {
-    SEQAN_CHECKPOINT;
     return endPosition(finder) == beginPosition(finder);
 }
 
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline bool
 empty(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     return empty(const_cast<TFinder const &>(finder));
 }
@@ -398,7 +373,6 @@ empty(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVer
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline void
 setHost(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder, typename Parameter_<Index<TText, TIndexSpec> >::Type index) {
-    SEQAN_CHECKPOINT;
     //typedef Index<TText, TIndexSpec>                        TIndex;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     SEQAN_ASSERT(finder._state == TFinder::STATE_EMPTY
@@ -412,7 +386,6 @@ setHost(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TV
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline void
 setHaystack(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder, typename Parameter_<Index<TText, TIndexSpec> >::Type & index) {
-    SEQAN_CHECKPOINT;
     setHost(finder, index);
 }
 
@@ -423,7 +396,6 @@ setHaystack(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline void
 clear(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > TFinder;
     if (finder._state != TFinder::STATE_EMPTY) finder._state = TFinder::STATE_INITIAL;
     clear(finder._pieceFinder);
@@ -439,7 +411,6 @@ clear(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVer
 template <typename TText, typename TIndexSpec, typename TPieceFinderSpec, typename TVerifyFinderSpec, typename DoPreparePatterns>
 inline void
 goBegin(Finder<Index<TText, TIndexSpec>, FinderPartitioning<TPieceFinderSpec, TVerifyFinderSpec, DoPreparePatterns> > & finder) {
-    SEQAN_CHECKPOINT;
     clear(finder);
 }
 

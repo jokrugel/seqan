@@ -1,7 +1,7 @@
 // ==========================================================================
 //                             find_index_approx
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -62,7 +62,6 @@ struct Pattern<TNeedle, DPBacktracking<TScore> > : public FindState2_ {
     Pattern()
         : _state(TPattern::STATE_EMPTY)
     {
-        SEQAN_CHECKPOINT;
     }
 
     // TODO(krugel) Explicit definition should normally not be necessary?
@@ -74,7 +73,6 @@ struct Pattern<TNeedle, DPBacktracking<TScore> > : public FindState2_ {
         , _currentScore(rhs._currentScore)
         , _stack(rhs._stack)
     {
-        SEQAN_CHECKPOINT;
     }
 
     template <typename TNeedle2>
@@ -85,7 +83,6 @@ struct Pattern<TNeedle, DPBacktracking<TScore> > : public FindState2_ {
         , _scoringScheme()
         , _stack()
     {
-        SEQAN_CHECKPOINT;
     }
 
     template <typename TNeedle2>
@@ -96,7 +93,6 @@ struct Pattern<TNeedle, DPBacktracking<TScore> > : public FindState2_ {
         , _scoringScheme()
         , _stack()
     {
-        SEQAN_CHECKPOINT;
     }
 
     template <typename TNeedle2>
@@ -107,7 +103,6 @@ struct Pattern<TNeedle, DPBacktracking<TScore> > : public FindState2_ {
         , _scoringScheme(scoringScheme)
         , _stack()
     {
-        SEQAN_CHECKPOINT;
     }
 };
 
@@ -133,7 +128,6 @@ struct ScoringScheme<Pattern<TNeedle, DPBacktracking<TScore> > > {
 template <typename TScoreValue>
 inline bool
 _impliesMatch(String<TScoreValue> const & column, const TScoreValue scoreLimit) {
-    SEQAN_CHECKPOINT;
     return back(column) >= scoreLimit;
 }
 
@@ -141,7 +135,6 @@ _impliesMatch(String<TScoreValue> const & column, const TScoreValue scoreLimit) 
 template <typename TScoreValue>
 inline bool
 _impliesDismiss(String<TScoreValue> const & column, const TScoreValue scoreLimit) {
-    SEQAN_CHECKPOINT;
     typedef String<TScoreValue>                             TColumn;
     typedef typename Position<TColumn>::Type                TPosition;
 
@@ -156,7 +149,6 @@ template <typename TText, typename TIndexSpec, typename TNeedle, typename TScore
 inline bool
 _flyNext(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder,
         Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
-    SEQAN_CHECKPOINT;
     while (!goRight(finder._data_iterator)) {
         if (!goUp(finder._data_iterator)) return false;
     }
@@ -167,7 +159,6 @@ _flyNext(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder,
 template <typename TNeedle, typename TScore>
 inline void
 _initColumn(Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef typename Size<TNeedle>::Type                    TSize;
     typedef typename Value<TScore>::Type                    TScoreValue;
     typedef String<TScoreValue>                             TColumn;
@@ -182,7 +173,6 @@ _initColumn(Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
 template <typename TNeedle, typename TScore, typename TTextInfix, typename TPosition>
 inline void
 _computeColumn(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TTextInfix const & text, TPosition pos) {
-    SEQAN_CHECKPOINT;
     typedef typename Size<TNeedle>::Type                    TSize;
     typedef typename Value<TScore>::Type                    TScoreValue;
     typedef String<TScoreValue>                             TColumn;
@@ -222,7 +212,6 @@ template <typename TText, typename TIndexSpec, typename TNeedle, typename TScore
 inline bool
 findBegin(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder,
         Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TScoreValue scoreLimit2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
               || pattern._state == TPattern::STATE_BEGIN_FOUND);
@@ -248,7 +237,6 @@ template <typename TText, typename TIndexSpec, typename TNeedle, typename TScore
 inline bool
 findBegin(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder,
         Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
                    || pattern._state == TPattern::STATE_BEGIN_FOUND);
@@ -272,7 +260,6 @@ template <typename TText, typename TIndexSpec, typename TNeedle, typename TScore
 inline bool
 find(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder,
         Pattern<TNeedle, DPBacktracking<TScore> > & pattern, const TScoreValue2 scoreLimit2) {
-    SEQAN_CHECKPOINT;
     setScoreLimit(pattern, scoreLimit2);
     return find(finder, pattern);
 }
@@ -281,7 +268,6 @@ template <typename TText, typename TIndexSpec, typename TNeedle, typename TScore
 inline bool
 find(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder,
         Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     typedef typename Position<Index<TText, TIndexSpec> >::Type TPosition;
@@ -366,21 +352,18 @@ find(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder,
 template <typename TNeedle, typename TScore>
 inline TScore const &
 scoringScheme(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return pattern._scoringScheme;
 }
 
 template <typename TNeedle, typename TScore>
 inline typename Value<TScore>::Type
 scoreLimit(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return pattern._scoreLimit;
 }
 
 template <typename TNeedle, typename TScore>
 inline typename Value<TScore>::Type
 getScore(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
               || pattern._state == TPattern::STATE_BEGIN_FOUND
@@ -391,7 +374,6 @@ getScore(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
 template <typename TNeedle, typename TScore>
 inline typename Value<TScore>::Type
 getBeginScore(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     SEQAN_ASSERT_EQ(pattern._state, TPattern::STATE_BEGIN_FOUND);
     return getScore(pattern);
@@ -404,28 +386,24 @@ getBeginScore(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
 template <typename TNeedle, typename TScore>
 inline TNeedle const &
 host(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return value(pattern._host);
 }
 
 template <typename TNeedle, typename TScore>
 inline TNeedle &
 host(Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
-    SEQAN_CHECKPOINT;
     return value(pattern._host);
 }
 
 template <typename TNeedle, typename TScore>
 inline TNeedle const &
 needle(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return host(pattern);
 }
 
 template <typename TNeedle, typename TScore>
 inline TNeedle &
 needle(Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
-    SEQAN_CHECKPOINT;
     return host(pattern);
 }
 
@@ -436,7 +414,6 @@ needle(Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
 template <typename TNeedle, typename TScore>
 inline typename Size<TNeedle>::Type
 length(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return length(needle(pattern));
 }
 
@@ -447,7 +424,6 @@ length(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
 template <typename TNeedle, typename TScore, typename TTag>
 inline typename Iterator<TNeedle const, Tag<TTag> const>::Type
 begin(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     SEQAN_ASSERT_EQ(pattern._state, TPattern::STATE_BEGIN_FOUND);
     return begin(needle(pattern), spec);
@@ -456,7 +432,6 @@ begin(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern, Tag<TTag> const
 template <typename TNeedle, typename TScore, typename TTag>
 inline typename Iterator<TNeedle const, Tag<TTag> const>::Type
 end(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
               || pattern._state == TPattern::STATE_BEGIN_FOUND);
@@ -466,7 +441,6 @@ end(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern, Tag<TTag> const &
 template <typename TNeedle, typename TScore>
 inline typename Position<TNeedle>::Type
 beginPosition(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     SEQAN_ASSERT_EQ(pattern._state, TPattern::STATE_BEGIN_FOUND);
     return 0u;
@@ -475,7 +449,6 @@ beginPosition(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
 template <typename TNeedle, typename TScore>
 inline typename Position<TNeedle>::Type
 endPosition(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     SEQAN_ASSERT(pattern._state == TPattern::STATE_FOUND
               || pattern._state == TPattern::STATE_BEGIN_FOUND);
@@ -489,7 +462,6 @@ endPosition(Pattern<TNeedle, DPBacktracking<TScore> > const & pattern) {
 template <typename TNeedle, typename TScore, typename TScoreValue2>
 inline void
 setScoreLimit(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TScoreValue2 scoreLimit) {
-    SEQAN_CHECKPOINT;
     clear(pattern);
     pattern._scoreLimit = scoreLimit;
 }
@@ -497,7 +469,6 @@ setScoreLimit(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TScoreValue2 
 template <typename TNeedle, typename TScore, typename TScore2>
 inline void
 setScoringScheme(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TScore2 const & scoringScheme2) {
-    SEQAN_CHECKPOINT;
     clear(pattern);
     pattern._scoringScheme = scoringScheme2;
 }
@@ -511,7 +482,6 @@ setScoringScheme(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TScore2 co
 template <typename TNeedle, typename TScore, typename TNeedle2>
 inline void
 setHost(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TNeedle2 && needle2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     clear(pattern);
     setValue(pattern._host, std::forward<TNeedle2>(needle2));
@@ -523,7 +493,6 @@ setHost(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TNeedle2 && needle2
 template <typename TNeedle, typename TScore, typename TNeedle2>
 inline void
 setHost(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TNeedle2 & needle2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     clear(pattern);
     setValue(pattern._host, needle2);
@@ -533,7 +502,6 @@ setHost(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TNeedle2 & needle2)
 template <typename TNeedle, typename TScore, typename TNeedle2>
 inline void
 setHost(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TNeedle2 const & needle2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     clear(pattern);
     setValue(pattern._host, needle2);
@@ -548,7 +516,6 @@ setHost(Pattern<TNeedle, DPBacktracking<TScore> > & pattern, TNeedle2 const & ne
 template <typename TNeedle, typename TScore>
 inline void
 clear(Pattern<TNeedle, DPBacktracking<TScore> > & pattern) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, DPBacktracking<TScore> >       TPattern;
     if (pattern._state != TPattern::STATE_EMPTY) pattern._state = TPattern::STATE_INITIAL;
     pattern._currentScore = 0;

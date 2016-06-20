@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -70,12 +70,10 @@ public:
     TOccurrencesIterator occurrencesIter;
 
     Finder() {
-        SEQAN_CHECKPOINT;
         clear(*this);
     }
 
     Finder(TIndex &_index): index(_index) {
-        SEQAN_CHECKPOINT;
         clear(*this);
     }
 };
@@ -100,7 +98,6 @@ struct DefaultFinder<Index<TText, IndexSttd64<TIndexSpec> > > {
 template <typename TText, typename TIndexSpec, typename TFinderSpec>
 inline void
 clear(Finder<Index<TText, TIndexSpec>, FinderSuffixTreeGoDown<TFinderSpec> > & me) {
-    SEQAN_CHECKPOINT;
     me.data_length = 0;
     clear(me.occurrences);
 }
@@ -112,7 +109,6 @@ clear(Finder<Index<TText, TIndexSpec>, FinderSuffixTreeGoDown<TFinderSpec> > & m
 template <typename TText, typename TIndexSpec, typename TFinderSpec>
 inline bool
 empty(Finder<Index<TText, TIndexSpec>, FinderSuffixTreeGoDown<TFinderSpec> > & me) {
-    SEQAN_CHECKPOINT;
     return empty(me.occurrences);
 }
 
@@ -149,7 +145,6 @@ inline bool find(Finder<Index<TText, TIndexSpec>, FinderSuffixTreeGoDown<TFinder
 template <typename TText, typename TIndexSpec, typename TFinderSpec>
 inline typename Position<Finder<Index<TText, TIndexSpec>, FinderSuffixTreeGoDown<TFinderSpec> > >::Type
 beginPosition(Finder<Index<TText, TIndexSpec>, FinderSuffixTreeGoDown<TFinderSpec> > & me) {
-    SEQAN_CHECKPOINT;
     return value(me.occurrencesIter);
 }
 
@@ -161,7 +156,6 @@ template <typename TText, typename TIndexSpec, typename TFinderSpec>
 void setHost(Finder<Index<TText, TIndexSpec>, FinderSuffixTreeGoDown<TFinderSpec> > & finder, typename Parameter_<Index<TText, TIndexSpec> >::Type & index) {
     //typedef Index<TText, TIndexSpec>  TIndex;
 
-    SEQAN_CHECKPOINT;
     clear(finder);
     setValue(finder.index, index);
 }

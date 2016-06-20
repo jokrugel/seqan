@@ -1,7 +1,7 @@
 // ==========================================================================
 //                             find_index_approx
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -862,7 +862,6 @@ SEQAN_DEFINE_TEST(test_find_index_on_segments) {
 
 template <typename TPatternSpec>
 void test_pattern_copycon() {
-    SEQAN_CHECKPOINT;
     typedef Pattern<CharString, TPatternSpec> TPattern;
     TPattern p1("Some needle");
     TPattern p2(p1);
@@ -872,7 +871,6 @@ void test_pattern_copycon() {
 
 template <typename TPatternSpec>
 void test_pattern_assign() {
-    SEQAN_CHECKPOINT;
     typedef Pattern<CharString, TPatternSpec> TPattern;
     TPattern p1("Some needle");
     TPattern p2;
@@ -895,7 +893,6 @@ void test_pattern_movecon() {
 
 template <typename TPatternSpec>
 void test_pattern_moveassign() {
-    SEQAN_CHECKPOINT;
     typedef Pattern<CharString, TPatternSpec> TPattern;
     TPattern p1("Some needle");
     TPattern p2;

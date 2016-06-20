@@ -36,7 +36,7 @@
 #include <boost/math/distributions.hpp>
 #endif
 
-namespace SEQAN_NAMESPACE_MAIN
+namespace seqan
 {
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1799,7 +1799,7 @@ bool loadPositions(TPositions & positions,
 
 
 
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
 
 template<typename TVal>
 double
@@ -5538,9 +5538,9 @@ void dumpCopyNumberPolymorphismsBatch(
             guess = "deletion";
         //if(guess != "normal" )
         //{
-            file << genomeID << "\tcoverage\t"<< guess << "\t";
-            file << currBinStart+ startCoord+1  << "\t" << currBinStart + startCoord + options.cnvWindowSize << "\t";
-            file << count << "\t+\t.\t.\n";
+        file << genomeID << "\tcoverage\t"<< guess << "\t";
+        file << currBinStart+ startCoord+1  << "\t" << currBinStart + startCoord + options.cnvWindowSize << "\t";
+        file << count << "\t+\t.\t.\n";
         //}
     }
 

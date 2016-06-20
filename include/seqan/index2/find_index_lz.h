@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -96,16 +96,12 @@ public:
 
     Finder()
     {
-        SEQAN_CHECKPOINT
-
         clear(*this);
     }
 
     Finder(TIndex &_index):
     index(_index)
     {
-        SEQAN_CHECKPOINT
-
         clear(*this);
     }
 };
@@ -118,8 +114,6 @@ template < typename TText, typename TBitBin, size_t LZTRIE_NODE_END_POSITION_SAM
 inline void
 clear(Finder< Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_POSITION_SAMPLE_RATE> >, FinderLz<TSpecFinder>  > & me)
 {
-    SEQAN_CHECKPOINT
-
     typedef Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_POSITION_SAMPLE_RATE> > TIndex;
     typedef typename Fibre<TIndex, FibreSA>::Type TSA;
     typedef typename Iterator<TSA const, Standard>::Type TIterator;
@@ -132,8 +126,6 @@ clear(Finder< Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_POSITION_SAMPLE_RATE
 
 template<typename TText, typename TBitBin, size_t LZTRIE_NODE_END_POSITION_SAMPLE_RATE, typename TSpecFinder, typename TPatternText, typename TSpecFinder2>
 inline void _findFirstIndex(Finder<Index<TText, IndexLZ<TBitBin, LZTRIE_NODE_END_POSITION_SAMPLE_RATE> > , FinderLz<TSpecFinder> > &me, const TPatternText &pattern, const TSpecFinder2) {
-    SEQAN_CHECKPOINT
-
     typedef typename Value<TText>::Type TValue;
     typedef typename SAValue<TText>::Type TSAValue;
 

@@ -1,7 +1,7 @@
 // ==========================================================================
 //                 SeqAn - The Library for Sequence Analysis
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -148,7 +148,7 @@ class Fragment;
  *
  * @include demos/dox/align/global_alignment_banded.cpp.stdout
  *
- * http://seqan.readthedocs.org/en/develop/Tutorial/PairwiseSequenceAlignment.html
+ * http://seqan.readthedocs.io/en/develop/Tutorial/PairwiseSequenceAlignment.html
  *
  * @section References
  *
@@ -483,7 +483,7 @@ TScoreValue globalAlignment(String<Fragment<TSize, TFragmentSpec>, TStringSpec> 
  * The same limitations to algorithms as in @link globalAlignment @endlink apply.  Furthermore, the
  * <tt>MyersBitVector</tt> and <tt>MyersHirschberg</tt> variants can only be used without any other parameter.
  *
- * @see http://seqan.readthedocs.org/en/develop/Tutorial/PairwiseSequenceAlignment.html
+ * @see http://seqan.readthedocs.io/en/develop/Tutorial/PairwiseSequenceAlignment.html
  * @see globalAlignment
  */
 

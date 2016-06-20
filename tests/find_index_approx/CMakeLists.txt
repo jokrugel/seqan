@@ -6,8 +6,8 @@
 # CMakeLists.txt file for the find_index_approx module tests.
 # ===========================================================================
 
-cmake_minimum_required (VERSION 2.8.2)
-project (seqan_tests_find_index_approx)
+cmake_minimum_required (VERSION 3.0.0)
+project (seqan_tests_find_index_approx CXX)
 message (STATUS "Configuring tests/find_index_approx")
 
 # ----------------------------------------------------------------------------

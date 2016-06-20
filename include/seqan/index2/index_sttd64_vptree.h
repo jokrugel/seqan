@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -133,7 +133,6 @@ public:
                               TSeq const & seq,
                               unsigned checkInternalSufficesFromPos) const
     {
-        SEQAN_CHECKPOINT;
         prefLenSuffices = prefLenSufficesStartingWith(seq, prefLenSuffices,
                                                       checkInternalSufficesFromPos);
         unsigned partChildCount = partitionChildren(firstPartitionChild, lastPartitionChild, seq);
@@ -154,7 +153,6 @@ public:
     inline bool
     rightSibling (TSeq & prefix, bool & node, unsigned & partitionNum) const
     {
-        SEQAN_CHECKPOINT;
         unsigned rightSuffSiblingCount;
         unsigned leftMostSuffSibling = ordValueOfLeftMostSuffSibling(rightSuffSiblingCount, prefix, false);
         unsigned firstPartSibling, lastPartSibling;
@@ -209,7 +207,6 @@ public:
     inline unsigned
     ordValueOfLeftMostSuffSibling(unsigned & rightSuffSiblingCount, TSeq const & prefix, bool includeSelfAsSibling) const
     {
-        SEQAN_CHECKPOINT;
         std::vector<unsigned> potentialSuffices;
         std::vector<unsigned> sufficesMatching;
         potentialSuffices = prefLenSufficesStartingWith(infix(prefix, 0, length(prefix) - 1),
@@ -293,7 +290,6 @@ public:
     inline bool leftMostChild(TSeq & leftMostChild, bool & node, unsigned & partChildNum,
                               TSeq const & seq) const
     {
-        SEQAN_CHECKPOINT;
         //TODO(aumann): assume no leaf, optimize?
         partChildNum = std::numeric_limits<unsigned>::max();
         unsigned firstChild, lastChild;
@@ -506,7 +502,6 @@ public:
     getSuffixAtRelativePos(TSeq & seq, unsigned relStartPos,
                                        typename Size<TSeq>::Type length) const
     {
-        SEQAN_CHECKPOINT;
         resize(seq, length);
         SEQAN_ASSERT_LEQ(relStartPos + length, prefixLen - 1);
         for (unsigned i = 0; i < length; i++) {
@@ -521,7 +516,6 @@ public:
                                  std::vector<unsigned> const & potentialSuffices,
                                  unsigned checkInternalSufficesFromPos) const
     {
-        SEQAN_CHECKPOINT;
         std::vector<unsigned> potentialSufficesTMP;
         std::vector<unsigned> sufficesStartingWithSeq;
         SEQAN_ASSERT_EQ(length(prefLenSuffix), prefixLen - 1);
@@ -577,7 +571,6 @@ public:
     partitionChildren(unsigned & firstChild, unsigned & lastChild, TSeq const & sequence,
                       unsigned searchLimit) const
     {
-        SEQAN_CHECKPOINT;
         unsigned startPartition;
         unsigned endPartition;
         unsigned count = 0;
@@ -626,7 +619,6 @@ public:
     inline void
     getStartAndEndOfPartition(unsigned & start, unsigned & end, TSeq const & sequence) const
     {
-        SEQAN_CHECKPOINT;
         SEQAN_ASSERT_LEQ(length(sequence), prefixLen);
         typedef String<typename Value<TSeq>::Type > TStr;
         if (length(sequence) < prefixLen) {

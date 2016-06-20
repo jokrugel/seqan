@@ -1,7 +1,7 @@
 // ==========================================================================
 //                             find_index_approx
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -69,7 +69,6 @@ struct Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > : FindState2_ {
         , _holder()
         , _data_iterator()
     {
-        SEQAN_CHECKPOINT;
     }
 
     Finder(TIndex & index)
@@ -77,7 +76,6 @@ struct Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > : FindState2_ {
         , _holder(index)
         , _data_iterator(index)
     {
-        SEQAN_CHECKPOINT;
     }
 };
 
@@ -96,28 +94,24 @@ struct Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > : FindState2_ {
 template <typename TText, typename TIndexSpec, typename TScore>
 inline Index<TText, TIndexSpec> &
 haystack(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     return value(finder._holder);
 }
 
 template <typename TText, typename TIndexSpec, typename TScore>
 inline Index<TText, TIndexSpec> const &
 haystack(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder) {
-    SEQAN_CHECKPOINT;
     return value(finder._holder);
 }
 
 template <typename TText, typename TIndexSpec, typename TScore>
 inline Index<TText, TIndexSpec> &
 host(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     return value(finder._holder);
 }
 
 template <typename TText, typename TIndexSpec, typename TScore>
 inline Index<TText, TIndexSpec> const &
 host(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder) {
-    SEQAN_CHECKPOINT;
     return value(finder._holder);
 }
 
@@ -128,7 +122,6 @@ host(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder) {
 template <typename TText, typename TIndexSpec, typename TScore, typename TTag>
 inline typename Iterator<Index<TText, TIndexSpec> const>::Type
 begin(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     // for compatibility with exact finders we also allow STATE_FOUND here
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
@@ -138,7 +131,6 @@ begin(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder, 
 template <typename TText, typename TIndexSpec, typename TScore, typename TTag>
 inline typename Iterator<Index<TText, TIndexSpec> >::Type
 begin(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     return begin(const_cast<TFinder const &>(finder), spec);
 }
@@ -146,7 +138,6 @@ begin(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder, Tag<TT
 template <typename TText, typename TIndexSpec, typename TScore, typename TTag>
 inline typename Iterator<Index<TText, TIndexSpec> const>::Type
 end(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
     return begin(haystack(finder), spec) + finder._endPosition;
@@ -155,7 +146,6 @@ end(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder, Ta
 template <typename TText, typename TIndexSpec, typename TScore, typename TTag>
 inline typename Iterator<Index<TText, TIndexSpec> >::Type
 end(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     return end(const_cast<TFinder const &>(finder), spec);
 }
@@ -167,7 +157,6 @@ end(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder, Tag<TTag
 template <typename TText, typename TIndexSpec, typename TScore>
 inline typename Position<Index<TText, TIndexSpec> const>::Type
 beginPosition(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     // for compatibility with exact finders we also allow STATE_FOUND here
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
@@ -177,7 +166,6 @@ beginPosition(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & 
 template <typename TText, typename TIndexSpec, typename TScore>
 inline typename Position<Index<TText, TIndexSpec> >::Type
 beginPosition(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     return beginPosition(const_cast<TFinder const &>(finder));
 }
@@ -185,7 +173,6 @@ beginPosition(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder
 template <typename TText, typename TIndexSpec, typename TScore>
 inline typename Position<Index<TText, TIndexSpec> const>::Type
 endPosition(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
     return finder._endPosition;
@@ -194,7 +181,6 @@ endPosition(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & fi
 template <typename TText, typename TIndexSpec, typename TScore>
 inline typename Position<Index<TText, TIndexSpec> >::Type
 endPosition(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     return endPosition(const_cast<TFinder const &>(finder));
 }
@@ -202,7 +188,6 @@ endPosition(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) 
 template <typename TText, typename TIndexSpec, typename TScore>
 inline typename Position<Index<TText, TIndexSpec> const>::Type
 position(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     // for compatibility with IndexEsa we also allow STATE_FOUND here
     SEQAN_ASSERT(finder._state == TFinder::STATE_BEGIN_FOUND || finder._state == TFinder::STATE_FOUND);
@@ -212,7 +197,6 @@ position(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finde
 template <typename TText, typename TIndexSpec, typename TScore>
 inline typename Position<Index<TText, TIndexSpec> >::Type
 position(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     return position(const_cast<TFinder const &>(finder));
 }
@@ -224,14 +208,12 @@ position(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
 template <typename TText, typename TIndexSpec, typename TScore>
 inline typename Size<Index<TText, TIndexSpec> const>::Type
 length(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder) {
-    SEQAN_CHECKPOINT;
     return endPosition(finder) - beginPosition(finder);
 }
 
 template <typename TText, typename TIndexSpec, typename TScore>
 inline typename Size<Index<TText, TIndexSpec> >::Type
 length(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     return length(const_cast<TFinder const &>(finder));
 }
@@ -243,14 +225,12 @@ length(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
 template <typename TText, typename TIndexSpec, typename TScore>
 inline bool
 empty(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > const & finder) {
-    SEQAN_CHECKPOINT;
     return endPosition(finder) == beginPosition(finder);
 }
 
 template <typename TText, typename TIndexSpec, typename TScore>
 inline bool
 empty(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     return empty(const_cast<TFinder const &>(finder));
 }
@@ -262,7 +242,6 @@ empty(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
 template <typename TText, typename TIndexSpec, typename TScore>
 inline void
 setHost(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder, typename Parameter_<Index<TText, TIndexSpec> >::Type & index) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     typedef Index<TText, TIndexSpec>                        TIndex;
     typedef typename Iterator<TIndex, TopDown<ParentLinks<> > >::Type TIterator;
@@ -276,7 +255,6 @@ setHost(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder, type
 template <typename TText, typename TIndexSpec, typename TScore>
 inline void
 setHaystack(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder, typename Parameter_<Index<TText, TIndexSpec> >::Type & index) {
-    SEQAN_CHECKPOINT;
     setHost(finder, index);
 }
 
@@ -287,7 +265,6 @@ setHaystack(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder, 
 template <typename TText, typename TIndexSpec, typename TScore>
 inline void
 clear(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     typedef Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > TFinder;
     if (finder._state != TFinder::STATE_EMPTY) finder._state = TFinder::STATE_INITIAL;
     goBegin(finder._data_iterator);
@@ -302,7 +279,6 @@ clear(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
 template <typename TText, typename TIndexSpec, typename TScore>
 inline void
 goBegin(Finder<Index<TText, TIndexSpec>, DPBacktracking<TScore> > & finder) {
-    SEQAN_CHECKPOINT;
     clear(finder);
 }
 

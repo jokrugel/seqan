@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -84,7 +84,6 @@ struct OccurrencesIterator<Index<TObject, IndexQGram<TShapeSpec, TSpec> > > {
     }
     
     TPosition operator*() {
-        SEQAN_CHECKPOINT;
         return value(realOccIt);
     }
 
@@ -148,7 +147,6 @@ struct OccurrencesIterator<Index<TObject, IndexQGram2L<UngappedShape<Q>, TAddres
     }
     
     TPosition operator*() {
-        SEQAN_CHECKPOINT;
         // position of subsequence in text + offest of gram within subsequence
         return saAt(saBackPos, value(index).backEndIndex) + getSeqOffset(saAt(saFrontPos, value(index).frontEndIndex));
     }
@@ -231,12 +229,10 @@ public:
     TPosition posChoice; // Value is multiple of stepSize(index)
 
     Finder() {
-        SEQAN_CHECKPOINT;
         clear(*this);
     }
 
     Finder(TIndex &_index): index(_index) {
-        SEQAN_CHECKPOINT;
         clear(*this);
     }
 };
@@ -277,7 +273,6 @@ atEnd(OccurrencesIterator<Index<TObject, IndexQGram2L<UngappedShape<Q>, TAddress
 template <typename TText, typename TIndexSpec, typename TVerification, typename TSpecFinder>
 inline void
 clear(Finder<Index<TText, TIndexSpec>, FinderQGramExtended<TVerification, TSpecFinder> > & me) {
-    SEQAN_CHECKPOINT;
     me.first = true;
     me.data_length = 0;
     me.currentStep = 0;
@@ -293,7 +288,6 @@ clear(Finder<Index<TText, TIndexSpec>, FinderQGramExtended<TVerification, TSpecF
 template <typename TText, typename TIndexSpec, typename TVerification, typename TSpecFinder>
 inline bool
 empty(Finder<Index<TText, TIndexSpec>, FinderQGramExtended<TVerification, TSpecFinder> > & me) {
-    SEQAN_CHECKPOINT;
     return me.first;
 }
 
@@ -497,7 +491,6 @@ find(Finder<Index<TText, TIndexSpec>, FinderQGramExtended<TVerification, TSpecFi
 template <typename TText, typename TIndexSpec, typename TVerification, typename TSpecFinder>
 inline typename Position<Finder<Index<TText, TIndexSpec>, FinderQGramExtended<TVerification, TSpecFinder> > >::Type
 beginPosition(Finder<Index<TText, TIndexSpec>, FinderQGramExtended<TVerification, TSpecFinder> > & me) {
-    SEQAN_CHECKPOINT;
     return *(me.occurrencesIter) - me.currentStep - me.posChoice;
 }
 
@@ -510,7 +503,6 @@ inline void
 setHost(Finder<Index<TText, TIndexSpec>, FinderQGramExtended<TVerification, TSpecFinder> > & finder, typename Parameter_<Index<TText, TIndexSpec> >::Type & index) {
     //typedef Index<TText, TIndexSpec>  TIndex;
 
-    SEQAN_CHECKPOINT;
     clear(finder);
     setValue(finder.index, index);
 }

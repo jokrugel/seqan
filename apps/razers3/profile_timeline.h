@@ -1,7 +1,7 @@
 // ==========================================================================
 //                 SeqAn - The Library for Sequence Analysis
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -39,11 +39,11 @@
 
 #include <iostream>
 
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
 #include <process.h>
-#else  // #ifdef PLATFORM_WINDOWS
+#else  // #ifdef STDLIB_VS
 #include <unistd.h>
-#endif  // #ifdef PLATFORM_WINDOWS
+#endif  // #ifdef STDLIB_VS
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -170,13 +170,13 @@ dumpTimeline(char const * path, bool appendPid)
     strcpy(pathBuffer, path);
     if (appendPid)
     {
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
         int pid = _getpid();
-#else // #ifdef PLATFORM_WINDOWS
+#else // #ifdef STDLIB_VS
         int pid = getpid();
-#endif // #ifdef PLATFORM_WINDOWS
+#endif // #ifdef STDLIB_VS
         char buffer[30];
-        sprintf(buffer, "%d", pid);
+        snprintf(buffer, 30, "%d", pid);
         strcat(pathBuffer, ".");
         strcat(pathBuffer, buffer);
     }

@@ -1,7 +1,7 @@
 // ==========================================================================
 //                 SeqAn - The Library for Sequence Analysis
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -61,10 +61,6 @@ namespace seqan {
 // Metafunction MaxValue
 // ----------------------------------------------------------------------------
 
-#ifdef PLATFORM_CUDA
-template <typename T>
-struct MaximumValueUnsigned_ { static const T VALUE = ~(T)0; };
-#else
 template <typename T>
 struct MaximumValueUnsigned_ { static const T VALUE = ~(T)0; };
 
@@ -74,7 +70,6 @@ struct MaximumValueUnsigned_ { static const T VALUE = ~(T)0; };
 
 //template <typename T>
 //const T MaximumValueUnsigned_<T>::VALUE = ~(T)0;
-#endif
 
 template <typename T>
 struct MaximumValueSigned_ { static const T VALUE; };
@@ -192,25 +187,25 @@ struct MinValue : MinValue_<T> {};
 // --------------------------------------------------------------------------
 
 template <typename TValue>
-inline SEQAN_HOST_DEVICE
+inline
 TValue toUpperValue(TValue c)
 {
     return c;
 }
 
-inline SEQAN_HOST_DEVICE
+inline
 char toUpperValue(char c)
 {
     return c >= 'a' && c <= 'z' ? c + 'A' - 'a' : c;
 }
 
-inline SEQAN_HOST_DEVICE
+inline
 signed char toUpperValue(signed char c)
 {
     return toUpperValue(static_cast<char>(c));
 }
 
-inline SEQAN_HOST_DEVICE
+inline
 unsigned char toUpperValue(unsigned char c)
 {
     return toUpperValue(static_cast<char>(c));
@@ -232,7 +227,6 @@ template <typename T>
 inline T const &
 maxValue()
 {
-    SEQAN_CHECKPOINT;
     T * _tag = 0;
     return supremumValueImpl(_tag);
 }
@@ -241,7 +235,6 @@ template <typename T>
 inline T const &
 maxValue(T /*tag*/)
 {
-    SEQAN_CHECKPOINT;
     T * _tag = 0;
     return supremumValueImpl(_tag);
 }
@@ -262,7 +255,6 @@ template <typename T>
 inline T const &
 minValue()
 {
-    SEQAN_CHECKPOINT;
     T * _tag = 0;
     return infimumValueImpl(_tag);
 }
@@ -271,7 +263,6 @@ template <typename T>
 inline T const &
 minValue(T /*tag*/)
 {
-    SEQAN_CHECKPOINT;
     T * _tag = 0;
     return infimumValueImpl(_tag);
 }

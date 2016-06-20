@@ -39,7 +39,7 @@
 #include <seqan/sequence.h>
 #include <seqan/arg_parse.h>
 
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
 #include <direct.h>
 #endif
 
@@ -53,7 +53,7 @@ typedef EqualsChar<'.'>        IsDot;
 typedef EqualsChar<'/'>        IsSlash;
 typedef EqualsChar<'\\'>       IsBackSlash;
 
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
     typedef IsBackSlash        IsPathDelimited;
 #else
     typedef IsSlash            IsPathDelimited;
@@ -70,7 +70,7 @@ typedef EqualsChar<'\\'>       IsBackSlash;
 template <typename TString, typename TValue>
 bool setEnv(TString const & key, TValue & value)
 {
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
     return !_putenv_s(toCString(key), toCString(value));
 #else
     return !setenv(toCString(key), toCString(value), true);
@@ -86,7 +86,7 @@ void getCwd(TString & string)
 {
     char cwd[1000];
 
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
     _getcwd(cwd, 1000);
 #else
     ignoreUnusedVariableWarning(getcwd(cwd, 1000));
@@ -263,6 +263,18 @@ inline TReadSeqSize getReadErrors(TOptions const & options, TReadSeqSize readSeq
 }
 
 // ----------------------------------------------------------------------------
+// Function getReadIndels()
+// ----------------------------------------------------------------------------
+// Returns the absolute number of indels for a given read sequence.
+
+template <typename TMatch, typename TOptions, typename TReadSeqSize>
+inline TReadSeqSize getReadIndels(TOptions const & options, TReadSeqSize readSeqLength)
+{
+    return std::min((TReadSeqSize)(readSeqLength * options.indelRate),
+                    (TReadSeqSize)MemberLimits<TMatch, Errors>::VALUE);
+}
+
+// ----------------------------------------------------------------------------
 // Function getReadStrata()
 // ----------------------------------------------------------------------------
 // Returns the absolute number of strata for a given read sequence.
@@ -281,7 +293,7 @@ inline TReadSeqSize getReadStrata(TOptions const & options, TReadSeqSize readSeq
 template <typename TOptions>
 bool saveContigsLimits(TOptions const & options)
 {
-    String<__uint64> limits;
+    String<uint64_t> limits;
 
     appendValue(limits, options.contigsMaxLength);
     appendValue(limits, options.contigsSize);
@@ -300,7 +312,7 @@ bool saveContigsLimits(TOptions const & options)
 template <typename TOptions>
 bool openContigsLimits(TOptions & options)
 {
-    String<__uint64> limits;
+    String<uint64_t> limits;
 
     CharString contigsLimitFile(options.contigsIndexFile);
     append(contigsLimitFile, ".txt.size");

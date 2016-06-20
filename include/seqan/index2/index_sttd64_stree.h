@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -232,7 +232,6 @@ public:
 template<typename TText, typename TIndexSpec, class TSpec>
 inline void clear(Iter<Index<TText, IndexSttd64<TIndexSpec> >, VSTree<TSpec> > &it)
 {
-    SEQAN_CHECKPOINT;
     typedef typename VertexDescriptor<Index<TText, IndexSttd64<TIndexSpec> > >::Type VertexD;
     if (container(it).virtualPrefixTree.prefixLen > 0)
     {
@@ -260,14 +259,12 @@ inline void clear(Iter<Index<TText, IndexSttd64<TIndexSpec> >, VSTree<TSpec> > &
 template<typename TText, typename TIndexSpec, class TSpec>
 inline void goRoot(Iter<Index<TText, IndexSttd64<TIndexSpec> >, VSTree<TSpec> > &it)
 {
-    SEQAN_CHECKPOINT;
     clear(it);
 }
 
 template<typename TText, typename TIndexSpec, class TSpec>
 inline bool isRoot(Iter<Index<TText, IndexSttd64<TIndexSpec> >, VSTree<TSpec> > const &it)
 {
-    SEQAN_CHECKPOINT;
     if (value(it).inVirtual && length(value(it).prefix) == 0)
         return true;
     if (Index<TText, IndexSttd64<TIndexSpec> >::PREFIX_LENGTH < 1 && value(it).nodePos == 0)
@@ -306,7 +303,6 @@ template<typename TText, class TIndexSpec, class TSpec>
 inline bool _goDown(Iter<Index<TText, IndexSttd64<TIndexSpec> >, VSTree<TopDown<TSpec> > > &it,
     DeepestSpec<VSTree<TopDown<> > >::Type const)
 {
-    SEQAN_CHECKPOINT;
     //typedef Index<TText, IndexSttd64<TIndexSpec> > TIndex;
     if (_isLeaf(value(it)))
     {
@@ -353,7 +349,6 @@ inline bool _goDown(Iter<Index<TText, IndexSttd64<TIndexSpec> >, VSTree<TopDown<
 template <typename TIndex, typename TSize >
 inline bool _isLeaf(VertexSttd64<TIndex, TSize> const & vDesc)
 {
-    SEQAN_CHECKPOINT;
     //this is a leaf if
     //1) virtual and only one suffix in the preflen last suffices of the text (no partition child)
     //2) non-virtual and node is a leaf
@@ -612,7 +607,6 @@ template <typename TText, typename TIndexSpec,class TSpec>
 inline typename SAValue<Index<TText, IndexSttd64<TIndexSpec> > >::Type
 getOccurrence(Iter<Index<TText, IndexSttd64<TIndexSpec> >, VSTree<TSpec> > const &it)
 {
-    SEQAN_CHECKPOINT;
     Index<TText, IndexSttd64<TIndexSpec> > const & index = container(it);
     if (_isLeaf(value(it)))
     {
@@ -673,7 +667,6 @@ _getLeftMostChild(typename VertexDescriptor<Index<TText, IndexSttd64<TIndexSpec>
                   typename VertexDescriptor<Index<TText, IndexSttd64<TIndexSpec> > >::Type const & nodeVD,
                   Index<TText, IndexSttd64<TIndexSpec> > const & index)
 {
-    SEQAN_CHECKPOINT;
     //typedef Index<TText, IndexSttd64<TIndexSpec> > TIndex;
     //typename ValueSize<typename Value<TText>::Type>::Type const alphabetSize = ValueSize<typename Value<typename TIndex::TText>::Type>::VALUE;
     SEQAN_ASSERT_NOT(_isLeaf(nodeVD));
@@ -857,7 +850,6 @@ _getVertexOfPartitionFather(typename VertexDescriptor<Index<TText, IndexSttd64<T
                             unsigned partitionNumber,
                             Index<TText, IndexSttd64<TIndexSpec> > const & index)
 {
-    SEQAN_CHECKPOINT;
     vd.partitionNum = partitionNumber;
     vd.inVirtual = false;
 //        vd.leftMostPrefPartition = std::numeric_limits<unsigned>::max(); //invalid
@@ -897,7 +889,6 @@ inline void _getLeftMostChildNode(
         typename VertexDescriptor<Index<TText, IndexSttd64<TIndexSpec> > >::Type const & nodeVD,
         Index<TText, IndexSttd64<TIndexSpec> > const & index)
 {
-    SEQAN_CHECKPOINT;
     typedef Index<TText, IndexSttd64<TIndexSpec> > TIndex;
     Sttd64Node_ iteratorsNode;
     SEQAN_ASSERT_NOT(nodeVD.inVirtual);

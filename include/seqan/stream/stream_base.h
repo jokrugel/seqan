@@ -1,7 +1,7 @@
 // ==========================================================================
 //                 SeqAn - The Library for Sequence Analysis
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -172,7 +172,7 @@ char const * FileExtensions<BZ2File, T>::VALUE[1] =
 inline bool
 _isPipe(const char * fileName)
 {
-#ifdef PLATFORM_WINDOWS
+#ifdef STDLIB_VS
     struct _stat buf;
     if (_stat(fileName, &buf) == 0)
         if ((buf.st_mode & _S_IFMT) == _S_IFCHR)

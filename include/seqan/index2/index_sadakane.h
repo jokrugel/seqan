@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -81,8 +81,6 @@ namespace impl
     inline void
     encode(const String<TValue> &input, const TSize inputLength, TBitBin **output)
     {
-        SEQAN_CHECKPOINT
-
         String<unsigned char> hsbPositions;
         resize(hsbPositions, inputLength, Exact());
 
@@ -126,8 +124,6 @@ namespace impl
     inline void
     decode(const TBitBin *input, const TSize inputLength, String<TValue> &output, const TValue offsetValue)
     {
-        SEQAN_CHECKPOINT
-
         TValue _value = offsetValue;
 
         size_t bitPosition = 0;
@@ -154,8 +150,6 @@ namespace impl
     inline TValue
     decodeValue(const TBitBin *input, const TSize _position)
     {
-        SEQAN_CHECKPOINT
-
         TValue output = 0;
 
         size_t bitPosition = 0;
@@ -196,13 +190,10 @@ namespace impl
         textEnd(end(text)),
         previousInverseSuffixArray(_previousInverseSuffixArray)
         {
-            SEQAN_CHECKPOINT
         };
 
         inline bool operator() (Pair<TBlockSAValue, TTextSAValue> const &a, Pair<TBlockSAValue, TTextSAValue> const &b) const
         {
-            SEQAN_CHECKPOINT
-
             if (a.i1 == b.i1) return false;
 
             if(a.i2 < b.i2) return true;
@@ -243,13 +234,10 @@ namespace impl
         blockEnd(begin(text) + textLength),
         previousInverseSuffixArray(_previousInverseSuffixArray)
         {
-            SEQAN_CHECKPOINT
         };
 
         inline bool operator() (Pair<TBlockSAValue, TTextSAValue> const &a, Pair<TBlockSAValue, TTextSAValue> const &b) const
         {
-            SEQAN_CHECKPOINT
-
             if (a.i1 == b.i1) return false;
 
             if(a.i2 < b.i2) return true;
@@ -279,8 +267,6 @@ namespace impl
     inline void
     increaseCharacterCount(TSize me[], const TText &text, const String<TBlockSAValue> &suffixArray)
     {
-        SEQAN_CHECKPOINT
-
         typedef typename Value<TText>::Type TValue;
 
         TValue lastCharacter = convert<TValue>(0);
@@ -305,8 +291,6 @@ namespace impl
     inline void
     increaseCharacterCount(TSize me[], const TText &text, const TBlockSAValue blockLength, const String<Pair<TBlockSAValue, TTextSAValue> > &suffixArray)
     {
-        SEQAN_CHECKPOINT
-
         typedef typename Value<TText>::Type TValue;
 
         TValue lastCharacter = convert<TValue>(0);
@@ -331,8 +315,6 @@ namespace impl
     inline TBlockSAValue
     pMapping(const TSAValue _position, const String<Pair<TBlockSAValue, TTextSAValue> > &suffixArray, const TBlockSAValue n = 0)
     {
-        SEQAN_CHECKPOINT
-
         typedef typename Position<const String<Pair<TBlockSAValue, TTextSAValue> > >::Type TPosition;
 
         TPosition l = n, r = length(suffixArray) - 1;
@@ -374,8 +356,6 @@ public:
     I(0),
     J(0)
     {
-        SEQAN_CHECKPOINT
-
         arrayFill(C, C + ValueSize<TValue>::VALUE + 1, 0);
     }
 };
@@ -388,8 +368,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t PSI_SAMPLE_RA
 inline void
 clear(SadakaneData<TValue, TSize, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me)
 {
-    SEQAN_CHECKPOINT
-
     delete[] me.psiSamples;
     me.psiSamples = 0;
 
@@ -418,7 +396,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t PSI_SAMPLE_RA
 inline TSize
 __psiAt(const SadakaneData<TValue, TSize, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me, const TSize _position)
 {
-    SEQAN_CHECKPOINT
     SEQAN_ASSERT_LEQ_MSG(_position, me.textLength, "");
 
     TSize psi = me.psiSamples[_position / PSI_SAMPLE_RATE];
@@ -434,7 +411,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t PSI_SAMPLE_RA
 inline TSize
 __saAt(const SadakaneData<TValue, TSize, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me, TSize _position)
 {
-    SEQAN_CHECKPOINT
     SEQAN_ASSERT_LEQ_MSG(_position, me.textLength, "");
 
     TSize i = 0;
@@ -451,7 +427,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t PSI_SAMPLE_RA
 inline TSize
 __isaAt(const SadakaneData<TValue, TSize, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me, const TSize _position)
 {
-    SEQAN_CHECKPOINT
     SEQAN_ASSERT_LEQ_MSG(_position, me.textLength, "");
 
     TSize i = me.J[_position / ISA_SAMPLE_RATE];
@@ -466,8 +441,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline void
 create(SadakaneData<typename Value<TText>::Type, typename SAValue<TText>::Type, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me, const TText &text)
 {
-    SEQAN_CHECKPOINT
-
     typedef typename Value<TText>::Type TValue;
     typedef typename SAValue<TText>::Type TSAValue;
 
@@ -549,8 +522,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline void
 create(SadakaneData<typename Value<TText>::Type, typename SAValue<TText>::Type, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me, const TText &text, TBlockSAValue blockLength)
 {
-    SEQAN_CHECKPOINT
-
     typedef typename Value<TText>::Type TValue;
     typedef typename SAValue<TText>::Type TSAValue;
 
@@ -831,8 +802,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t PSI_SAMPLE_RA
 inline void
 open(TStream &in, SadakaneData<TValue, TSize, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me)
 {
-    SEQAN_CHECKPOINT
-
     in.read((char*) &me.textLength, sizeof(TSize));
 
     me.psiSamples = new TSize[(me.textLength - 1) / PSI_SAMPLE_RATE + 1];
@@ -862,8 +831,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t PSI_SAMPLE_RA
 inline void
 save(TStream &out, const SadakaneData<TValue, TSize, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me)
 {
-    SEQAN_CHECKPOINT
-
     out.write((const char*) &me.textLength, sizeof(TSize));
 
     out.write((const char*) me.psiSamples, ((me.textLength - 1) / PSI_SAMPLE_RATE + 1) * sizeof(TSize));
@@ -917,8 +884,6 @@ template<typename TValue, typename TSize, typename TBitBin, size_t PSI_SAMPLE_RA
 inline size_t
 size(const SadakaneData<TValue, TSize, TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> &me)
 {
-    SEQAN_CHECKPOINT
-
     size_t compressedPsiSize = 0;
     if(PSI_SAMPLE_RATE > 1) {
         for(TSize i = 0; i < (me.textLength - 1) / PSI_SAMPLE_RATE; ++i) {
@@ -990,7 +955,6 @@ public:
     text(),
     data()
     {
-        SEQAN_CHECKPOINT
     }
 
     template<typename TOtherText>
@@ -998,7 +962,6 @@ public:
     text(_text),
     data()
     {
-        SEQAN_CHECKPOINT
     }
 };
 
@@ -1010,8 +973,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline void
 clear(Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me)
 {
-    SEQAN_CHECKPOINT
-
     clear(me.text);
     clear(me.data);
 }
@@ -1020,8 +981,6 @@ template <typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SA
 inline bool
 indexSupplied(Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me, FibreSA const)
 {
-    SEQAN_CHECKPOINT
-
     return me.data.textLength > 0;
 }
 
@@ -1029,8 +988,6 @@ template <typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SA
 inline bool
 indexSolveDependencies(Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> >& me, FibreSA const)
 {
-    SEQAN_CHECKPOINT
-
     return indexSupplied(me, FibreText());
 }
 
@@ -1038,8 +995,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline bool
 indexCreate(Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me, FibreSA const)
 {
-    SEQAN_CHECKPOINT
-
     typedef typename Size<TText>::Type TTextSize;
 
     const TText &text = getFibre(me, FibreText());
@@ -1065,8 +1020,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline bool
 indexCreate(Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me, FibreSA const, const typename Size<TText>::Type blockLength)
 {
-    SEQAN_CHECKPOINT
-    
     typedef typename Size<TText>::Type TTextSize;
     const TText &text = getFibre(me, FibreText());
     const TTextSize textLength = length(text);
@@ -1125,8 +1078,6 @@ template<typename TReturnText, typename TText, typename TBitBin, size_t PSI_SAMP
 inline TReturnText
 extract(const Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me, const typename Position<TText>::Type _begin, const typename Position<TText>::Type _end)
 {
-    SEQAN_CHECKPOINT
-
     typedef typename Value<TText>::Type TValue;
     typedef typename SAValue<TText>::Type TSAValue;
 
@@ -1168,8 +1119,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline typename Value<TText>::Type
 extractValue(const Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me, const typename Position<TText>::Type _position)
 {
-    SEQAN_CHECKPOINT
-
     typedef typename Value<TText>::Type TValue;
     typedef typename SAValue<TText>::Type TSAValue;
 
@@ -1197,8 +1146,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline bool
 open(Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me, const char *filename)
 {
-    SEQAN_CHECKPOINT
-
     std::ifstream in;
 
     in.open(filename);
@@ -1217,8 +1164,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline bool
 save(const Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me, const char *filename)
 {
-    SEQAN_CHECKPOINT
-
     std::ofstream out;
 
     out.open(filename);
@@ -1237,8 +1182,6 @@ template<typename TText, typename TBitBin, size_t PSI_SAMPLE_RATE, size_t SA_SAM
 inline size_t
 size(const Index<TText, IndexSadakane<TBitBin, PSI_SAMPLE_RATE, SA_SAMPLE_RATE, ISA_SAMPLE_RATE> > &me)
 {
-    SEQAN_CHECKPOINT
-
     return sizeof(Holder<TText>) + size(me.data);
 }
 

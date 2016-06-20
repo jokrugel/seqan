@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -82,12 +82,10 @@ public:
     TPreparedPositionsIter preparedPositionsIter;
 
     Finder() {
-        SEQAN_CHECKPOINT;
         clear(*this);
     }
 
     Finder(TIndex &_index): index(_index) {
-        SEQAN_CHECKPOINT;
         clear(*this);
         setHost(*this, _index);
     }
@@ -113,7 +111,6 @@ struct DefaultFinder<Index<TText, IndexDigest<TIndexSpec> > > {
 template <typename TText, typename TSpec, typename TVerification, typename TSpecFinder>
 inline void
 clear(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVerification, TSpecFinder> > & finder) {
-    SEQAN_CHECKPOINT;
     finder.data_length = 0u;
     finder.first = true;
     finder.wasPrefix = true;
@@ -131,7 +128,6 @@ clear(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVerification, TSpe
 template <typename TText, typename TSpec, typename TVerification, typename TSpecFinder>
 inline bool
 empty(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVerification, TSpecFinder> > const & finder) {
-    SEQAN_CHECKPOINT;
     return finder.leftmostLeaf == finder.rightmostLeaf;
 }
 
@@ -144,7 +140,6 @@ inline void
 setHost(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVerification, TSpecFinder> > & finder, typename Parameter_<Index<TText, IndexDigest<TSpec> > >::Type & index) {
     //typedef Index<TText, IndexDigest<TSpec> > TIndex;
 
-    SEQAN_CHECKPOINT;
     clear(finder);
     // finder.index = Holder<TIndex>(index);
     setValue(finder.index, index);
@@ -162,8 +157,6 @@ beginPosition(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVerificati
     typedef typename TIndex::TSuffixTree                    TSuffixTree;
     typedef typename TIndex::TLeaves                        TLeaves;
 
-    SEQAN_CHECKPOINT;
-    
     if (empty(value(finder.preparedPositions))) {
         TIndex const & index = haystack(finder);
         TSuffixTree const & tree = index.suffixTrees[finder.currentTree];
@@ -245,7 +238,6 @@ findInCurrentTree(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVerifi
 template <typename TText, typename TSpec, typename TVerification, typename TSpecFinder, typename TNeedle, typename TIndex, typename TSpecPattern, typename TPreparedPositions>
 inline void
 preparePiecePositions(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVerification, TSpecFinder> > & finder, Pattern<TNeedle, PatternDigest<TIndex, TSpecPattern> > & pattern, TPreparedPositions & preparedPositions) {
-    SEQAN_CHECKPOINT;
     
     //typedef Pattern<TNeedle, PatternDigest<TIndex, TSpecPattern> > TPattern;
     typedef typename TIndex::TSize                          TSize;
@@ -325,7 +317,6 @@ preparePiecePositions(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVe
 template <typename TText, typename TSpec, typename TVerification, typename TSpecFinder, typename TPreparedPositions>
 inline void
 setPreparedPiecePositions(Finder<Index<TText, IndexDigest<TSpec> >, FinderDigest<TVerification, TSpecFinder> > & finder, TPreparedPositions & preparedPositions) {
-    SEQAN_CHECKPOINT;
     setValue(finder.preparedPositions, preparedPositions);
 }
 

@@ -1,7 +1,7 @@
 // ==========================================================================
 //                                   index2
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -84,12 +84,10 @@ struct DigestBitIterator {
         mask(MASK_HIGHEST_BIT) { }
 
     bool operator *() {
-        SEQAN_CHECKPOINT;
         return (mask & (TMaskValue) value(string)[currentPos]) != 0u;
     }
 
     void operator ++() {
-        SEQAN_CHECKPOINT;
         mask >>= 1u;
         --bitPos;
         if (mask == 0u) {
@@ -100,7 +98,6 @@ struct DigestBitIterator {
     }
 
     void operator +=(TSize i) {
-        SEQAN_CHECKPOINT;
         if (i < bitPos) {
 			bitPos -= i;
             mask >>= i;
@@ -140,7 +137,6 @@ struct Pattern<TNeedle, PatternDigest<TIndex, TSpec> > {
     Pattern(TNeedle2 & needle)
         //: _host(needle)
     {
-        SEQAN_CHECKPOINT;
         setHost(*this, needle);
     }
 };
@@ -185,7 +181,6 @@ inline void
 clear(DigestBitIterator<TString> & itBit) {
     typedef DigestBitIterator<TString>                      TBitIterator;
     
-    SEQAN_CHECKPOINT;
     itBit.currentPos = 0u,
     itBit.bitPos = TBitIterator::BITS_PER_VALUE;
     itBit.mask = TBitIterator::MASK_HIGHEST_BIT;
@@ -194,7 +189,6 @@ clear(DigestBitIterator<TString> & itBit) {
 template <typename TNeedle, typename TIndex, typename TSpec>
 inline void
 clear(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     clear(pattern.itBit);
 }
 
@@ -205,28 +199,24 @@ clear(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > & pattern) {
 template <typename TNeedle, typename TIndex, typename TSpec>
 TNeedle const &
 host(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return value(pattern._host);
 }
 
 template <typename TNeedle, typename TIndex, typename TSpec>
 TNeedle &
 host(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     return value(pattern._host);
 }
 
 template <typename TNeedle, typename TIndex, typename TSpec>
 TNeedle const &
 needle(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return host(pattern);
 }
 
 template <typename TNeedle, typename TIndex, typename TSpec>
 TNeedle &
 needle(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > & pattern) {
-    SEQAN_CHECKPOINT;
     return host(pattern);
 }
 
@@ -237,7 +227,6 @@ needle(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > & pattern) {
 template <typename TNeedle, typename TIndex, typename TSpec>
 typename Size<TNeedle>::Type
 length(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return length(needle(pattern));
 }
 
@@ -248,7 +237,6 @@ length(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > const & pattern) {
 template <typename TNeedle, typename TIndex, typename TSpec, typename TNeedle2>
 inline void
 setHost(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > & pattern, TNeedle2 & needle2) {
-    SEQAN_CHECKPOINT;
     typedef Pattern<TNeedle, PatternDigest<TIndex, TSpec> > TPattern;
     typedef typename TIndex::TPrefix                        TPrefix;
     typedef typename TPattern::TDigestSuffix                TDigestSuffix;
@@ -289,28 +277,24 @@ setNeedle(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > & pattern, TNeedle2 & 
 template <typename TNeedle, typename TIndex, typename TSpec, typename TTag>
 typename Iterator<TNeedle const, Tag<TTag> const>::Type
 begin(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > const & pattern, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     return begin(needle(pattern), spec);
 }
 
 template <typename TNeedle, typename TIndex, typename TSpec, typename TTag>
 typename Iterator<TNeedle const, Tag<TTag> const>::Type
 end(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > const & pattern, Tag<TTag> const & spec) {
-    SEQAN_CHECKPOINT;
     return end(needle(pattern), spec);
 }
 
 template <typename TNeedle, typename TIndex, typename TSpec>
 typename Position<TNeedle>::Type
 beginPosition(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return 0u;
 }
 
 template <typename TNeedle, typename TIndex, typename TSpec>
 typename Position<TNeedle>::Type
 endPosition(Pattern<TNeedle, PatternDigest<TIndex, TSpec> > const & pattern) {
-    SEQAN_CHECKPOINT;
     return length(needle(pattern));
 }
 

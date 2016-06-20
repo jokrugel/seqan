@@ -1,7 +1,7 @@
 // ==========================================================================
 //                 SeqAn - The Library for Sequence Analysis
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // Copyright (c) 2013 NVIDIA Corporation
 // All rights reserved.
 //
@@ -36,7 +36,7 @@
 #ifndef SEQAN_HEADER_INDEX_SHIMS_H
 #define SEQAN_HEADER_INDEX_SHIMS_H
 
-namespace SEQAN_NAMESPACE_MAIN
+namespace seqan
 {
 
     //////////////////////////////////////////////////////////////////////////////
@@ -53,7 +53,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TObject const &text,
         TAlgSpec const)
     {
-    SEQAN_CHECKPOINT
         // signed characters behave different than unsigned when compared
         // to get the same index with signed or unsigned chars we simply cast them to unsigned
         // before feeding them into the pipeline
@@ -87,7 +86,6 @@ namespace SEQAN_NAMESPACE_MAIN
         StringSet<TString, TSpec> const &stringSet,
         TAlgSpec const)
     {
-    SEQAN_CHECKPOINT
         // signed characters behave different than unsigned when compared
         // to get the same index with signed or unsigned chars we simply cast them to unsigned
         // before feeding them into the pipeline
@@ -140,7 +138,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TText const &s,
         TAlgSpec const &alg)
     {
-    SEQAN_CHECKPOINT
         // -> call internal memory algorithm with an extended interface (+ alphabet size, max_depth)
         if (BitsPerValue< typename Value<TText>::Type >::VALUE > 16)
             createSuffixArray(sa, s, alg, length(s), 0);
@@ -158,7 +155,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TAlgSpec const &alg,
         True)
     {
-    SEQAN_CHECKPOINT
         _createSuffixArrayRandomAccess(sa, s, alg);
     }
 
@@ -174,7 +170,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TAlgSpec const &,
         True)
     {
-    SEQAN_CHECKPOINT
         _createSuffixArrayPipelining(sa, s, Skew7());
     }
 
@@ -188,7 +183,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TAlgSpec const &alg,
         False)
     {
-    SEQAN_CHECKPOINT
         _createSuffixArrayPipelining(sa, s, alg);
     }
 
@@ -201,7 +195,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TText const &s,
         TAlgSpec const &alg)
     {
-    SEQAN_CHECKPOINT
         _createSuffixArrayWrapper(sa, s, alg, typename SACreatorRandomAccess_<TSA, TText, TAlgSpec>::Type());
     }
 
@@ -214,7 +207,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TText const &s,
         LarssonSadakane const &alg)
     {
-    SEQAN_CHECKPOINT
         _createSuffixArrayWrapper(sa, s, alg, False());
     }
 
@@ -282,7 +274,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TSA const &suffixArray,
         TAlgSpec const)
     {
-    SEQAN_CHECKPOINT
         // specialization
         typedef Pipe< TObject, Source<> >                            srcText_t;
         typedef Pipe< TSA, Source<> >                               srcSA_t;
@@ -313,7 +304,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TSA const &suffixArray,
         TAlgSpec const)
     {
-    SEQAN_CHECKPOINT
         typedef typename Concatenator<StringSet<TString, TSpec> >::Type TConcat;
         typedef Multi<
             TAlgSpec,
@@ -366,7 +356,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TAlgSpec const &alg,
         True)
     {
-    SEQAN_CHECKPOINT
         _createLCPTableRandomAccess(lcp, s, sa, alg);
     }
 
@@ -382,7 +371,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TAlgSpec const &alg,
         False)
     {
-    SEQAN_CHECKPOINT
         _createLCPTablePipelining(lcp, s, sa, alg);
     }
 
@@ -397,7 +385,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TSA const &sa,
         TAlgSpec const &alg)
     {
-    SEQAN_CHECKPOINT
         _createLCPTableWrapper(lcp, s, sa, alg, typename LcpCreatorRandomAccess_<TLCP, TText, TSA, TAlgSpec>::Type());
     }
 
@@ -428,7 +415,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TLCP const & /*LCP*/,
         TAlgSpec const)
     {
-    SEQAN_CHECKPOINT
         typedef typename Concatenator<TObject>::Type                TConcat;
 
         // specialization
@@ -463,7 +449,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TLCP const &LCP,
         TAlgSpec const)
     {
-    SEQAN_CHECKPOINT
         //TSA LCP;
         //resize(LCP, length(s), Exact());
         // we use LCPE[n-lcpSize..n-1] as a temporary buffer instead of allocating one
@@ -487,7 +472,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TLCP const &LCP,
         TAlgSpec const alg)
     {
-    SEQAN_CHECKPOINT
         createLcpeTableExt(LCPE, s, SA, LCP, alg);
     }
 
@@ -503,7 +487,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TSA &SA,
         TLCP &LCP)
     {
-    SEQAN_CHECKPOINT
         createLcpeTable(LCPE, s, SA, LCP, Kasai());
     }
 
@@ -524,7 +507,6 @@ namespace SEQAN_NAMESPACE_MAIN
         TText const &s,
         TSA const &SA)
     {
-    SEQAN_CHECKPOINT
         // specialization
         typedef Pipe< TText, Source<> >                        srcText_t;
         typedef Pipe< TSA, Source<> >                       srcSA_t;
@@ -558,7 +540,6 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TBWT, typename TText, typename TSA, typename TTextRandom_ >
     inline void _createBWTableWrapper(TBWT &bwt, TText const &s, TSA const &sa,        TTextRandom_ const)
     {
-    SEQAN_CHECKPOINT
         createBWTableExt(bwt, concat(s), sa);
     }
 
@@ -566,14 +547,12 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TBWT, typename TText, typename TSA >
     inline void _createBWTableWrapper(TBWT &bwt, TText const &s, TSA const &sa,        True const)
     {
-    SEQAN_CHECKPOINT
         createBWTableInt(bwt, concat(s), sa);
     }
 
     template < typename TBWT, typename TText, typename TSA >
     inline void createBWTable(TBWT &bwt, TText const &s, TSA const &sa)
     {
-    SEQAN_CHECKPOINT
         _createBWTableWrapper(bwt, s, sa, typename AllowsFastRandomAccess<TText>::Type());
     }
 
@@ -617,7 +596,6 @@ namespace SEQAN_NAMESPACE_MAIN
     template <typename TValue, typename TSpec>
     inline void orderOccurrences(String<TValue, TSpec> &occString)
     {
-    SEQAN_CHECKPOINT
         std::sort(begin(occString, Standard()), end(occString, Standard()), SAValueLess_<TValue>());
     }
 
@@ -644,7 +622,6 @@ namespace SEQAN_NAMESPACE_MAIN
  */
     template <typename TText, typename TSpec, typename TSpecAlg>
     inline bool indexCreate(Index<TText, TSpec> &index, FibreSA, TSpecAlg const alg) {
-    SEQAN_CHECKPOINT
         resize(indexSA(index), length(indexRawText(index)), Exact());
         createSuffixArray(indexSA(index), indexText(index), alg);
         return true;
@@ -660,7 +637,6 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template <typename TText, typename TSpec, typename TSpecAlg>
     inline bool indexCreate(Index<TText, TSpec> &index, FibreLcp, TSpecAlg const alg) {
-    SEQAN_CHECKPOINT
         resize(indexLcp(index), length(indexRawText(index)), Exact());
         createLcpTable(indexLcp(index), indexText(index), indexSA(index), alg);
         return true;
@@ -668,7 +644,6 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template <typename TText, typename TSpec, typename TSpecAlg>
     inline bool indexCreate(Index<TText, TSpec> &index, FibreLcpe, TSpecAlg const alg) {
-    SEQAN_CHECKPOINT
     //TODO: separate LCP from LCPE (for now LCPE = LCP + extra)
         resize(indexLcpe(index), sizeofLcpe(lengthSum(index)), Exact());
         createLcpeTable(indexLcpe(index), indexRawText(index), indexSA(index), indexLcp(index), alg);
@@ -678,7 +653,6 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template <typename TText, typename TSpec>
     inline bool indexCreate(Index<TText, TSpec> &index, FibreBwt, Bwt const) {
-    SEQAN_CHECKPOINT
         resize(indexBwt(index), length(indexRawText(index)), Exact());
         createBWTable(indexBwt(index), indexText(index), indexRawSA(index));
         return true;
@@ -686,7 +660,6 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template <typename TText, typename TSpec>
     inline bool indexCreate(Index<TText, TSpec> &index, FibreChildtab, Childtab const) {
-    SEQAN_CHECKPOINT
         resize(indexChildtab(index), length(indexRawText(index)), Exact());
         createChildtab(indexChildtab(index), indexLcp(index));
         return true;
@@ -694,7 +667,6 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template <typename TText, typename TSpec, typename TFibre>
     inline bool indexCreate(Index<TText, TSpec> &index, Tag<TFibre> const fibre) {
-    SEQAN_CHECKPOINT
         return indexCreate(index, fibre, typename DefaultIndexCreator<Index<TText, TSpec>, Tag<TFibre> const>::Type());
     }
 
@@ -727,8 +699,7 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
  * @return bool <tt>true</tt>, iff the fibre is present.
  */
     template <typename TText, typename TSpec, typename TFibre>
-    SEQAN_HOST_DEVICE inline bool indexSupplied(Index<TText, TSpec> &index, Tag<TFibre> const fibre) {
-    SEQAN_CHECKPOINT
+    inline bool indexSupplied(Index<TText, TSpec> &index, Tag<TFibre> const fibre) {
         return !empty(getFibre(index, fibre));
     }
 
@@ -762,7 +733,6 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
 
     template <typename TText, typename TSpec, typename TFibre>
     inline bool indexRequire(Index<TText, TSpec> &index, Tag<TFibre> const fibre) {
-    SEQAN_CHECKPOINT
         if (indexSupplied(index, fibre)) return true;                // if the table doesn't exist,
         if (!indexSolveDependencies(index, fibre)) return false;    // fulfill requirements
         return indexCreate(index, fibre);                            // and create table
@@ -776,7 +746,6 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
     inline typename Reference< typename Cargo<Index<TText, TSpec> >::Type >::Type
     cargo(Index<TText, TSpec> & me)
     {
-    SEQAN_CHECKPOINT
         return me.cargo;
     }
 
@@ -784,7 +753,6 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
     inline typename Reference< typename Cargo<Index<TText, TSpec> const>::Type >::Type
     cargo(Index<TText, TSpec> const & me)
     {
-    SEQAN_CHECKPOINT
         return me.cargo;
     }
 
@@ -793,37 +761,31 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
 
     template <typename TText, typename TSpec, typename TFibre>
     inline bool indexSolveDependencies(Index<TText, TSpec> &, Tag<TFibre> const) {
-    SEQAN_CHECKPOINT
         return true;
     }
 
     template <typename TText, typename TSpec>
     inline bool indexSolveDependencies(Index<TText, TSpec> &index, FibreIsa) {
-    SEQAN_CHECKPOINT
         return indexRequire(index, FibreSA());
     }
 
     template <typename TText, typename TSpec>
     inline bool indexSolveDependencies(Index<TText, TSpec> &index, FibreLcp) {
-    SEQAN_CHECKPOINT
         return indexRequire(index, FibreSA());
     }
 
     template <typename TText, typename TSpec>
     inline bool indexSolveDependencies(Index<TText, TSpec> &index, FibreLcpe) {
-    SEQAN_CHECKPOINT
         return indexRequire(index, FibreLcp());
     }
 
     template <typename TText, typename TSpec>
     inline bool indexSolveDependencies(Index<TText, TSpec> &index, FibreChildtab) {
-    SEQAN_CHECKPOINT
         return indexRequire(index, FibreLcp());
     }
 
     template <typename TText, typename TSpec>
     inline bool indexSolveDependencies(Index<TText, TSpec> &index, FibreBwt) {
-    SEQAN_CHECKPOINT
         return indexRequire(index, FibreSA());
     }
 
@@ -836,10 +798,10 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
     template <typename TValue>
     inline bool open(TValue & value, const char *fileName, int openMode)
     {
-        String<TValue, External< ExternalConfigLarge<> > > extString;
-        if (!open(extString, fileName, openMode & ~OPEN_CREATE)) return false;
-        if (!empty(extString)) assign(value, front(extString));
-        return true;
+        File<> f;
+        if (!open(f, fileName, openMode & ~OPEN_CREATE))
+            return false;
+        return read(f, &value, 1);
     }
 
     template <typename TValue>
@@ -850,7 +812,6 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
 
     template < typename TValue, typename TSpec >
     inline bool open(String<TValue, TSpec> &string, const char *fileName, int openMode) {
-    SEQAN_CHECKPOINT
         String<TValue, External< ExternalConfigLarge<> > > extString;
         if (!open(extString, fileName, openMode & ~OPEN_CREATE)) return false;
         assign(string, extString, Exact());
@@ -858,13 +819,11 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
     }
     template < typename TValue, typename TSpec >
     inline bool open(String<TValue, TSpec> &string, const char *fileName) {
-    SEQAN_CHECKPOINT
         return open(string, fileName, OPEN_RDONLY);
     }
 
     template < typename THost, typename TSpec >
     inline bool open(Segment<THost, TSpec> &string, const char *fileName, int openMode) {
-    SEQAN_CHECKPOINT
         String<typename Value<THost>::Type, External< ExternalConfigLarge<> > > extString;
         if (!open(extString, fileName, openMode & ~OPEN_CREATE)) return false;
         assign(string, extString, Exact());
@@ -872,40 +831,21 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
     }
     template < typename THost, typename TSpec >
     inline bool open(Segment<THost, TSpec> &string, const char *fileName) {
-    SEQAN_CHECKPOINT
         return open(string, fileName, OPEN_RDONLY);
     }
-
-#ifdef PLATFORM_CUDA
-    template <typename TChar, typename TAlloc>
-    inline bool open(thrust::device_vector<TChar, TAlloc> & me, const char *fileName, int openMode)
-    {
-        String<TChar> str;
-        if (!open(str, fileName, openMode)) return false;
-        assign(me, str);
-        return true;
-    }
-
-    template <typename TChar, typename TAlloc>
-    inline bool open(thrust::device_vector<TChar, TAlloc> & me, const char *fileName)
-    {
-        return open(me, fileName, OPEN_RDONLY);
-    }
-#endif
 
     // ATTENTION:
     // This implementation of open doesn't work with external memory StringSets (External<>, MMap<>)
     // If you need a persistent external StringSet you have to use a Owner<ConcatDirect<> > StringSet.
     template < typename TString, typename TSSSpec >
     inline bool open(StringSet<TString, TSSSpec> &multi, const char *fileName, int openMode) {
-    SEQAN_CHECKPOINT
         char id[12]; // 2^32 has 10 decimal digits + 1 (0x00)
         unsigned i = 0;
         clear(multi);
         CharString name;
         while (true)
         {
-            sprintf(id, ".%u", i);
+            snprintf(id, 12, ".%u", i);
             name = fileName;
             append(name, id);
             {
@@ -923,14 +863,12 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
 
     template < typename TValue, typename TSpec, typename TSSSpec >
         inline bool open(StringSet<String<TValue, TSpec>, Dependent<TSSSpec> > &, const char *, int) {
-        SEQAN_CHECKPOINT
         // Do nothing for dependent string sets
         return true;
     }
 
     template < typename TString, typename TSSSpec >
     inline bool open(StringSet<TString, Owner<ConcatDirect<TSSSpec> > > &multi, const char *fileName, int openMode) {
-    SEQAN_CHECKPOINT
         CharString name;
         name = fileName;
         append(name, ".concat");
@@ -950,7 +888,6 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
 
     template < typename TValue, typename TSpec, typename TSSSpec>
     inline bool open(StringSet<String<TValue, TSpec>, TSSSpec> &multi, const char *fileName) {
-    SEQAN_CHECKPOINT
         return open(multi, fileName, OPEN_RDONLY);
     }
 
@@ -959,13 +896,12 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
 // save
 
     template <typename TValue>
-    inline bool save(TValue const &val, const char *fileName, int openMode)
+    inline bool save(TValue const &value, const char *fileName, int openMode)
     {
-        String<TValue, External< ExternalConfigLarge<> > > extString;
-        if (!open(extString, fileName, openMode)) return false;
-        clear(extString);
-        appendValue(extString, val);
-        return true;
+        File<> f;
+        if (!open(f, fileName, openMode))
+            return false;
+        return write(f, &value, 1);
     }
 
     template <typename TValue>
@@ -976,7 +912,6 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
 
     template < typename TValue, typename TSpec >
     inline bool save(String<TValue, TSpec> const &string, const char *fileName, int openMode) {
-    SEQAN_CHECKPOINT
 //
 //        if (length(string) == 0) return true;
         String<TValue, External< ExternalConfigLarge<> > > extString;
@@ -986,13 +921,11 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
     }
     template < typename TValue, typename TSpec >
     inline bool save(String<TValue, TSpec> const &string, const char *fileName) {
-    SEQAN_CHECKPOINT
         return save(string, fileName, OPEN_WRONLY | OPEN_CREATE);
     }
 
     template < typename THost, typename TSpec >
     inline bool save(Segment<THost, TSpec> const &string, const char *fileName, int openMode) {
-    SEQAN_CHECKPOINT
         if (length(string) == 0) return true;
         String<typename Value<THost>::Type, External< ExternalConfigLarge<> > > extString;
         if (!open(extString, fileName, openMode)) return false;
@@ -1001,19 +934,17 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
     }
     template < typename THost, typename TSpec >
     inline bool save(Segment<THost, TSpec> const &string, const char *fileName) {
-    SEQAN_CHECKPOINT
         return save(string, fileName, OPEN_WRONLY | OPEN_CREATE);
     }
 
     template < typename TString, typename TSSSpec>
     inline bool save(StringSet<TString, TSSSpec> const &multi, const char *fileName, int openMode) {
-    SEQAN_CHECKPOINT
         if (length(multi) == 0) return true;
         char id[12]; // 2^32 has 10 decimal digits + 2 ('.' and 0x00)
         CharString name;
         for(unsigned i = 0; i < length(multi); ++i)
         {
-            sprintf(id, ".%u", i);
+            snprintf(id, 12, ".%u", i);
             name = fileName;
             append(name, &(id[0]));
             if (!save(multi[i], toCString(name), openMode))
@@ -1024,14 +955,12 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
 
     template < typename TValue, typename TSpec, typename TSSSpec >
     inline bool save(StringSet<String<TValue, TSpec>, Dependent<TSSSpec> > const &, const char *, int) {
-        SEQAN_CHECKPOINT
         // Do nothing for dependent string sets
         return true;
     }
 
     template < typename TString, typename TSSSpec >
     inline bool save(StringSet<TString, Owner<ConcatDirect<TSSSpec> > > const &multi, const char *fileName, int openMode) {
-    SEQAN_CHECKPOINT
         CharString name;
         name = fileName;
         append(name, ".concat");
@@ -1043,7 +972,6 @@ inline bool indexCreate(Index<TText, TSpec> & index, FibreSA, Trie)
     }
     template < typename TValue, typename TSpec, typename TSSSpec>
     inline bool save(StringSet<String<TValue, TSpec>, TSSSpec> const &multi, const char *fileName) {
-    SEQAN_CHECKPOINT
         return save(multi, fileName, OPEN_WRONLY | OPEN_CREATE);
     }
 

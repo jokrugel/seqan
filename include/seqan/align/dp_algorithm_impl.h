@@ -1,7 +1,7 @@
 // ==========================================================================
 //                 SeqAn - The Library for Sequence Analysis
 // ==========================================================================
-// Copyright (c) 2006-2015, Knut Reinert, FU Berlin
+// Copyright (c) 2006-2016, Knut Reinert, FU Berlin
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -273,13 +273,8 @@ _computeCell(TDPScout & scout,
 
     if (TrackingEnabled_<TMetaColumn, TCellDescriptor>::VALUE)
     {
-        typedef typename IsSameType<typename TColumnDescriptor::TColumnProperty,
-            DPFinalColumn>::Type TIsLastColumn;
-        typedef typename And<IsSameType<TCellDescriptor, LastCell>, Or<
-            IsSameType<typename TColumnDescriptor::TLocation,
-            PartialColumnBottom>,IsSameType<
-            typename TColumnDescriptor::TLocation, FullColumn> > >::Type
-            TIsLastRow;
+        typedef typename LastColumnEnabled_<TDPProfile, TColumnDescriptor>::Type TIsLastColumn;
+        typedef typename LastRowEnabled_<TDPProfile, TCellDescriptor, TColumnDescriptor>::Type TIsLastRow;
         _scoutBestScore(scout, activeCell, traceMatrixNavigator,
                         TIsLastColumn(), TIsLastRow());
     }
